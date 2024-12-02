@@ -1,0 +1,9 @@
+/* CSSでデザインを調整 */
+#choices img {
+   width: 200px;
+   height: auto;
+}
+
+.hidden {
+   display: none;
+}
