@@ -81,7 +81,6 @@ function displayQuestion(question) {
 
     questionElement.textContent = question.question;
     choicesElement.innerHTML = '';
-    hintElement.textContent = '';
     resultElement.textContent = '';
 
     // 選択肢を表示
@@ -147,7 +146,7 @@ displayQuestion(nextQuestion());
 function showHint() {
     // ヒントを表示するロジック
     const hintElement = document.getElementById('hint');
-    hintElement.classList.remove('hidden');
+    hintElement.classList.toggle('hidden');
 }
 
 // ヒントボタンのイベントリスナー
