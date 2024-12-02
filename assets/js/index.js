@@ -1,16 +1,77 @@
 const questions = [
     // 問題データ
     {
+        id: 1,
         question: "次の直角三角形において、斜辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 0,
-        difficulty: "easy",
         img: "./assets/img/三角形(θはB).svg"
     },
+    {
+        id: 1,
+        question: "次の直角三角形において、斜辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 1, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはC).svg",
+    
+    }, 
+    {
+        id: 1,
+        question: "次の直角三角形において、斜辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 2, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはA).svg"
+    
+    }, {
+        id: 1,
+        question: "次の直角三角形において、対辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 0, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはC).svg",
+    },
+    {
+        id: 1,
+        question: "次の直角三角形において、対辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 1, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはA).svg",
+    
+    }, 
+    {
+        id: 1,
+        question: "次の直角三角形において、対辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 2, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはB).svg",
+    
+    }, 
+    {
+        id: 1,
+        question: "次の直角三角形において、隣辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 0, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはA).svg",
+    }, 
+    {
+        id: 1,
+        question: "次の直角三角形において、隣辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 1, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはB).svg",
+    
+    }, 
+    {
+        id: 1,
+        question: "次の直角三角形において、隣辺はどの辺ですか？",
+        choices: ["AB", "BC", "AC"],
+        correctAnswer: 2, // 0から始まるインデックスで指定
+        img: "./assets/img/三角形(θはC).svg"
+    
+    }
     // ... その他の問題
 ];
 
-const difficultyLevels = ["easy", "normal", "hard"];
+const difficultyLevels = ["easy", "normal"];
 
 function displayQuestion(question) {
     const questionElement = document.getElementById('question');
@@ -31,21 +92,33 @@ function displayQuestion(question) {
         choicesElement.appendChild(button);
     });
 
-    // 画像を表示
-    const image = document.createElement('img');
-    image.src = question.img;
-    choicesElement.appendChild(image);
-}
+     // 画像を表示
+     const image = document.createElement('img');
+     image.src = question.img;
+ 
+     // 難易度に応じた回転
+     if (question.difficulty === 'easy') {
+         image.style.transform = 'rotate(0deg)';
+     } else {
+         const randomAngle = Math.floor(Math.random() * 360);
+         image.style.transform = `rotate(${randomAngle}deg)`;
+     }
+ 
+     choicesElement.appendChild(image);
+ }
+
 
 function checkAnswer(selectedAnswer, question) {
     if (selectedAnswer === question.correctAnswer) {
         alert('正解！');
         correctAnswers++;
+        displayQuestion(nextQuestion());
     } else {
         alert('不正解！');
     }
     displayResult();
-    nextQuestion();
+    
+;
 }
 
 function displayResult() {
@@ -55,26 +128,28 @@ function displayResult() {
 }
 
 function nextQuestion() {
-    // 難易度をランダムに選択
-    const randomDifficulty = difficultyLevels[Math.floor(Math.random() * difficultyLevels.length)];
-    const filteredQuestions = questions.filter(q => q.difficulty === randomDifficulty);
-    const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
-    const nextQuestion = filteredQuestions[randomIndex];
+     // 難易度を取得
+     const selectedDifficulty = document.querySelector('input[name="difficulty"]:checked').value;
 
-    displayQuestion(nextQuestion);
+     // ランダムに選択に問題を選択
+     const randomIndex = Math.floor(Math.random() * questions.length);
+     const nextQuestion = questions[randomIndex];
+     nextQuestion.difficulty= selectedDifficulty;
+ 
+     return nextQuestion;
 }
 
-function showHint(question) {
-    // ヒントを表示するロジック
-    const hintElement = document.getElementById('hint');
-    hintElement.textContent = 'ヒント: 正解は、直角と最も遠い頂点と直角を挟む辺です。'; // 例
-    hintElement.classList.remove('hidden');
-}
 
 // 初期化
 let correctAnswers = 0;
-displayQuestion(getRandomQuestion());
+displayQuestion(nextQuestion());
+
+function showHint() {
+    // ヒントを表示するロジック
+    const hintElement = document.getElementById('hint');
+    hintElement.classList.remove('hidden');
+}
 
 // ヒントボタンのイベントリスナー
 const hintButton = document.getElementById('hintButton');
-hintButton.addEventListener('click', () => showHint(currentQuestion));
+hintButton.addEventListener('click', () => showHint());

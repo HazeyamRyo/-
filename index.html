@@ -10,25 +10,30 @@
       
     <title>三角比を理解しよう</title>
 </head>
+
+
 <body>
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>三角形クイズ</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <div id="question"></div>
-        <div id="choices"></div>
-        <div id="hint" class="hidden"></div>
-        <button id="hintButton">ヒントを見る</button>
-        <div id="result"></div>
+    <div>
+        難易度:
+        <input type="radio" name="difficulty" value="easy" checked> Easy
+        <input type="radio" name="difficulty" value="normal"> Normal
+        <input type="radio" name="difficulty" value="hard"> Hard
+    <div>
+    <div id="question"></div>
+    <div id="choices"></div>
+    <div id="hint" class="hidden">
+        <p>三角形の辺の名前</p>
+        <img src="./assets/img/三角形辺の名前.gif" alt="">
+    </div>
+    <button id="hintButton">ヒントを見る</button>
+    <div id="result"></div>
+    <script src="./assets/js/index.js"></script>
+</body>
+
+</html>      
         
-    </body>
-    </html>
+    
+    
     
     
 
-    <script src="./assets/js/index.js"></script>
-</body>
-</html>
