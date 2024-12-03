@@ -23,7 +23,7 @@ const questions = [
         img: "./assets/img/三角形(θはB).svg"
     },
     {
-        id: 1,
+        id: 2,
         question: "次の直角三角形において、斜辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 1, // 0から始まるインデックスで指定
@@ -31,21 +31,21 @@ const questions = [
     
     }, 
     {
-        id: 1,
+        id: 3,
         question: "次の直角三角形において、斜辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 2, // 0から始まるインデックスで指定
         img: "./assets/img/三角形(θはA).svg"
     
     }, {
-        id: 1,
+        id: 2,
         question: "次の直角三角形において、対辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 0, // 0から始まるインデックスで指定
         img: "./assets/img/三角形(θはC).svg",
     },
     {
-        id: 1,
+        id: 3,
         question: "次の直角三角形において、対辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 1, // 0から始まるインデックスで指定
@@ -61,7 +61,7 @@ const questions = [
     
     }, 
     {
-        id: 1,
+        id: 3,
         question: "次の直角三角形において、隣辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 0, // 0から始まるインデックスで指定
@@ -76,7 +76,7 @@ const questions = [
     
     }, 
     {
-        id: 1,
+        id: 2,
         question: "次の直角三角形において、隣辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 2, // 0から始まるインデックスで指定
@@ -173,7 +173,6 @@ function getNextQuestion() {
     return nextQuestion;
 }
 
-// 問題を表示する関数の修正
 function displayQuestion(question) {
     const questionElement = document.getElementById('question');
     const choicesElement = document.getElementById('choices');
@@ -189,23 +188,56 @@ function displayQuestion(question) {
         choicesElement.appendChild(button);
     });
 
-    // 画像を表示
-    const image = document.createElement('img');
-    image.src = question.img;
+    // 画像を生成して表示
+    const canvas = generateTriangleImage(question);
 
     // 難易度に応じた回転と鏡写し
     if (question.difficulty === 'easy') {
-        image.style.transform = 'rotate(0deg)';
+        canvas.style.transform = 'rotate(0deg)';
     } else if (question.difficulty === 'normal') {
         const randomAngle = Math.floor(Math.random() * 360);
-        image.style.transform = `rotate(${randomAngle}deg)`;
+        canvas.style.transform = `rotate(${randomAngle}deg)`;
     } else if (question.difficulty === 'hard') {
         const randomAngle = Math.floor(Math.random() * 360);
-        image.style.transform = `rotate(${randomAngle}deg) scaleX(-1)`;
+        canvas.style.transform = `rotate(${randomAngle}deg) scaleX(-1)`;
     }
 
-    choicesElement.appendChild(image);
+    choicesElement.appendChild(canvas);
 }
+
+function generateTriangleImage(question) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 300;
+    canvas.height = 300;
+    const ctx = canvas.getContext('2d');
+
+    // 画像を描画
+    const img = new Image();
+    img.src = question.img;
+    img.onload = () => {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // 頂点に記号を割り振る
+        ctx.font = '20px Arial';
+        ctx.fillStyle = 'black';
+        if (question.id === 1) {
+            ctx.fillText('A', 260, 40); // 右上にA
+            ctx.fillText('C', 260, 260); // 右下にC
+            ctx.fillText('B', 40, 260); // 左下にB
+        } else if (question.id === 2) {
+            ctx.fillText('B', 260, 40); // 右上にB
+            ctx.fillText('A', 260, 260); // 右下にA
+            ctx.fillText('C', 40, 260); // 左下にC
+        } else if (question.id === 3) {
+            ctx.fillText('C', 260, 40); // 右上にC
+            ctx.fillText('B', 260, 260); // 右下にB
+            ctx.fillText('A', 40, 260); // 左下にA
+        }
+    };
+
+    return canvas;
+}
+
 
 function checkAnswer(selectedAnswer, question) {
     const resultDiv = document.getElementById("result");
