@@ -188,6 +188,8 @@ function displayQuestion(question) {
         choicesElement.appendChild(button);
     });
 
+    
+    
     // 画像を生成して表示
     const canvas = generateTriangleImage(question);
 
@@ -218,21 +220,21 @@ function generateTriangleImage(question) {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         // 頂点に記号を割り振る
-        ctx.font = '20px Arial';
-        ctx.fillStyle = 'black';
-        if (question.id === 1) {
-            ctx.fillText('A', 260, 40); // 右上にA
-            ctx.fillText('C', 260, 260); // 右下にC
-            ctx.fillText('B', 40, 260); // 左下にB
-        } else if (question.id === 2) {
-            ctx.fillText('B', 260, 40); // 右上にB
-            ctx.fillText('A', 260, 260); // 右下にA
-            ctx.fillText('C', 40, 260); // 左下にC
-        } else if (question.id === 3) {
-            ctx.fillText('C', 260, 40); // 右上にC
-            ctx.fillText('B', 260, 260); // 右下にB
-            ctx.fillText('A', 40, 260); // 左下にA
-        }
+    ctx.font = 'bold 30px Arial'; // フォントサイズを24pxにし、太字にする
+    ctx.fillStyle = 'black';
+    if (question.id === 1) {
+        ctx.fillText('A', 260, 40); // 右上にA
+        ctx.fillText('C', 260, 280); // 右下にC
+        ctx.fillText('B', 20, 280); // 左下にB
+    } else if (question.id === 2) {
+        ctx.fillText('B', 260, 40); // 右上にB
+        ctx.fillText('A', 260, 280); // 右下にA
+        ctx.fillText('C', 20, 280); // 左下にC
+    } else if (question.id === 3) {
+        ctx.fillText('C', 260, 40); // 右上にC
+        ctx.fillText('B', 260, 280); // 右下にB
+        ctx.fillText('A', 20, 280); // 左下にA
+    }
     };
 
     return canvas;
