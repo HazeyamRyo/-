@@ -1,3 +1,18 @@
+//高校数学の三角比の問題を出題するアプリの一部を作成します。
+//このページでは、三角形の辺の名前に関連する問題を出題します。
+//問題の画像はassets/imgフォルダに保存されています。
+//画像は、直角三角形の各辺に関連する角度を示しています。
+//各問題には、正しい答えがあります。ユーザーが選択した答えが正しいかどうかを確認します。
+//難易度が３つあります。easyとnormalとhardです。
+//easyの場合、画像は回転しません。normalの場合、画像はランダムな角度で回転します。hardの場合、画像はランダムな角度で回転し、画像は鏡写しになります。
+//正解数が5問に達すると、難易度がnormalに変更されます。
+//正解数が10問に達すると、難易度がhardに変更されます。
+//正解数が15問に達すると、ゲームが終了します。
+//難易度が変更されると、画面にメッセージが表示されます。
+//ヒントボタンをクリックすると、ヒントが表示されます。
+
+
+
 const questions = [
     // 問題データ
     {
@@ -155,9 +170,21 @@ function nextQuestion() {
             const difficultyMessageElement = document.createElement('div');
             difficultyMessageElement.textContent = '難易度が normalになります。ここからは図形が回転します。';
             difficultyMessageElement.className = 'difficulty-message';
+        
+            // 他の要素を非表示にする
+            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
+            elementsToHide.forEach(element => {
+                element.style.display = 'none';
+            });
+        
             document.body.appendChild(difficultyMessageElement);
             setTimeout(() => {
                 difficultyMessageElement.remove();
+        
+                // 他の要素を再表示する
+                elementsToHide.forEach(element => {
+                    element.style.display = '';
+                });
             }, 2000);
             difficultyMessageShown = true; // フラグを更新
         }
