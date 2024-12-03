@@ -83,13 +83,15 @@ body {
    justify-content: space-between; /* 両端に配置する */
    align-items: center; /* 中央揃えにする */
    flex-wrap: wrap; /* 必要に応じて折り返す */
+   width: 80%;
+   height: auto;
 }
 
 #choices button {
    background-color: #ff69b4;
    color: white;
    padding: 15px 30px;
-   margin: 10px;
+   margin: 20px;
    border: none;
    border-radius: 10px;
    cursor: pointer;
@@ -103,10 +105,11 @@ body {
    transform: scale(1.05);
 }
 
-#choices img {
+#choices canvas {
    width: 250px;
    height: auto;
    margin: 50px;
+   margin-right: 100px; 
    border: 5px solid #ff69b4;
    border-radius: 10px;
    order: 1; /* 画像を左側に配置 */
