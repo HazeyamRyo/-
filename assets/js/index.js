@@ -91,12 +91,89 @@ const questions = [
 // 初期化
 let correctAnswers = 0;
 let selectedDifficulty = 'easy'; // 初期難易度を設定
-let difficultyMessageShown = false; // フラグ変数を追加
+let difficultyMessageNormalShown = false; // フラグ変数を追加
+let difficultyMessageHardShown = false; // フラグ変数を追加
 displayQuestion(nextQuestion());
 displayScore();
 displayDifficulty(); // 初期化時に難易度を表示
 
-// 問題を表示
+function nextQuestion() {
+    // 難易度に応じて処理を変更
+    //難易度hardの場合、画像はランダムな角度で回転し、鏡写しになります。
+    if (correctAnswers >= 15) {
+        alert('終了！');
+        return;
+    } else if (correctAnswers >= 10) {
+        if (selectedDifficulty !== 'hard' && !difficultyMessageHardShown) {
+            const difficultyMessageElement = document.createElement('div');
+            difficultyMessageElement.textContent = '難易度が hardになります。ここからは図形が回転し、さらに反転します。';
+            difficultyMessageElement.className = 'difficulty-message';
+
+            // 他の要素を非表示にする
+            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
+            elementsToHide.forEach(element => {
+                element.style.display = 'none';
+            });
+
+            document.body.appendChild(difficultyMessageElement);
+            setTimeout(() => {
+                difficultyMessageElement.remove();
+
+                // 他の要素を再表示する
+                elementsToHide.forEach(element => {
+                    element.style.display = '';
+                });
+            }, 2000);
+            difficultyMessageHardShown = true; // フラグを更新
+        }
+        selectedDifficulty = 'hard';
+    } 
+    //難易度normalの場合、画像はランダムな角度で回転します。
+    else if (correctAnswers >= 5) {
+        if (selectedDifficulty !== 'normal' && !difficultyMessageNormalShown) {
+            const difficultyMessageElement = document.createElement('div');
+            difficultyMessageElement.textContent = '難易度が normalになります。ここからは図形が回転します。';
+            difficultyMessageElement.className = 'difficulty-message';
+
+            // 他の要素を非表示にする
+            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
+            elementsToHide.forEach(element => {
+                element.style.display = 'none';
+            });
+
+            document.body.appendChild(difficultyMessageElement);
+            setTimeout(() => {
+                difficultyMessageElement.remove();
+
+                // 他の要素を再表示する
+                elementsToHide.forEach(element => {
+                    element.style.display = '';
+                });
+            }, 2000);
+            difficultyMessageNormalShown = true; // フラグを更新
+        }
+        selectedDifficulty = 'normal';
+    } 
+    //難易度easyの場合、画像は回転しません。
+    else {
+        selectedDifficulty = 'easy';
+    }
+    displayDifficulty(); // 難易度が変更された後に表示
+
+    return getNextQuestion();
+}
+
+
+// ランダムに次の問題を取得
+function getNextQuestion() {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    const nextQuestion = questions[randomIndex];
+    nextQuestion.difficulty = selectedDifficulty;
+    console.log(nextQuestion);
+    return nextQuestion;
+}
+
+// 問題を表示する関数の修正
 function displayQuestion(question) {
     const questionElement = document.getElementById('question');
     const choicesElement = document.getElementById('choices');
@@ -116,12 +193,15 @@ function displayQuestion(question) {
     const image = document.createElement('img');
     image.src = question.img;
 
-    // 難易度に応じた回転
+    // 難易度に応じた回転と鏡写し
     if (question.difficulty === 'easy') {
         image.style.transform = 'rotate(0deg)';
-    } else {
+    } else if (question.difficulty === 'normal') {
         const randomAngle = Math.floor(Math.random() * 360);
         image.style.transform = `rotate(${randomAngle}deg)`;
+    } else if (question.difficulty === 'hard') {
+        const randomAngle = Math.floor(Math.random() * 360);
+        image.style.transform = `rotate(${randomAngle}deg) scaleX(-1)`;
     }
 
     choicesElement.appendChild(image);
@@ -158,53 +238,10 @@ function displayScore() {
 }
 
 // 正答数が10問に達したら終了
-if (correctAnswers === 10) {
+if (correctAnswers === 15) {
     alert('終了！');
 }
 
-// 次の問題を取得
-function nextQuestion() {
-    // 正答数が5問に達するまで難易度は「easy」
-    if (correctAnswers >= 5) {
-        if (selectedDifficulty !== 'normal' && !difficultyMessageShown) {
-            const difficultyMessageElement = document.createElement('div');
-            difficultyMessageElement.textContent = '難易度が normalになります。ここからは図形が回転します。';
-            difficultyMessageElement.className = 'difficulty-message';
-        
-            // 他の要素を非表示にする
-            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
-            elementsToHide.forEach(element => {
-                element.style.display = 'none';
-            });
-        
-            document.body.appendChild(difficultyMessageElement);
-            setTimeout(() => {
-                difficultyMessageElement.remove();
-        
-                // 他の要素を再表示する
-                elementsToHide.forEach(element => {
-                    element.style.display = '';
-                });
-            }, 2000);
-            difficultyMessageShown = true; // フラグを更新
-        }
-        selectedDifficulty = 'normal';
-    } else {
-        selectedDifficulty = 'easy';
-    }
-    displayDifficulty(); // 難易度が変更された後に表示
-
-    return getNextQuestion();
-}
-    
-// ランダムに次の問題を取得
-function getNextQuestion() {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const nextQuestion = questions[randomIndex];
-    nextQuestion.difficulty = selectedDifficulty;
-    console.log(nextQuestion);
-    return nextQuestion;
-}
 
 //現在の難易度を表示
 function displayDifficulty() {
