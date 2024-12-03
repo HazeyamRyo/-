@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (86a8ad7, 2024-10-11)"
-   sodipodi:docname="三角形(θはC).svg"
+   sodipodi:docname="三角形(θはA).svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="true"
      inkscape:zoom="3.3060082"
-     inkscape:cx="95.583551"
-     inkscape:cy="84.543046"
+     inkscape:cx="95.58355"
+     inkscape:cy="84.543045"
      inkscape:window-width="1920"
      inkscape:window-height="986"
      inkscape:window-x="-11"
@@ -127,47 +127,6 @@
          x="103.72255"
          y="120.7701"
          style="fill:#000000;fill-opacity:1;stroke-width:0.544252;stroke-dasharray:none">θ</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18.7132px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.848726;stroke-dasharray:none;stroke-opacity:1"
-       x="182.44682"
-       y="176.75925"
-       id="text4"
-       transform="scale(0.96034625,1.0412911)"><tspan
-         sodipodi:role="line"
-         x="182.44682"
-         y="176.75925"
-         id="tspan5"
-         style="stroke-width:0.848726">A</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18.7132px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.848726;stroke-dasharray:none;stroke-opacity:1"
-       x="15.226299"
-       y="175.1608"
-       id="text4-8"
-       transform="scale(0.96034625,1.0412911)"><tspan
-         sodipodi:role="line"
-         x="15.226299"
-         y="175.1608"
-         id="tspan5-8"
-         style="stroke-width:0.848726">C</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18.7132px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.848726;stroke-dasharray:none;stroke-opacity:1"
-       x="182.78996"
-       y="22.656097"
-       id="text4-5"
-       transform="scale(0.96034625,1.0412911)"><tspan
-         sodipodi:role="line"
-         x="182.78996"
-         y="22.656097"
-         id="tspan5-1"
-         style="stroke-width:0.848726">B</tspan><tspan
-         sodipodi:role="line"
-         x="182.78996"
-         y="46.047592"
-         style="stroke-width:0.848726"
-         id="tspan6" /></text>
     <path
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.544252;stroke-dasharray:none;stroke-opacity:1"
        d="M 37.20499,162.73402 C 85.500898,162.73402 133.79681,162.73402 182.09271,162.73402"

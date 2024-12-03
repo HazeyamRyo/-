@@ -20,14 +20,14 @@ const questions = [
         question: "次の直角三角形において、斜辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 0,
-        img: "./assets/img/三角形(θはB).svg"
+        img: "./assets/img/三角形.svg"
     },
     {
         id: 2,
         question: "次の直角三角形において、斜辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 1, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはC).svg",
+        img: "./assets/img/三角形.svg",
     
     }, 
     {
@@ -35,21 +35,21 @@ const questions = [
         question: "次の直角三角形において、斜辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 2, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはA).svg"
+        img: "./assets/img/三角形.svg"
     
     }, {
         id: 2,
         question: "次の直角三角形において、対辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 0, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはC).svg",
+        img: "./assets/img/三角形.svg",
     },
     {
         id: 3,
         question: "次の直角三角形において、対辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 1, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはA).svg",
+        img: "./assets/img/三角形.svg",
     
     }, 
     {
@@ -57,7 +57,7 @@ const questions = [
         question: "次の直角三角形において、対辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 2, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはB).svg",
+        img: "./assets/img/三角形.svg",
     
     }, 
     {
@@ -65,14 +65,14 @@ const questions = [
         question: "次の直角三角形において、隣辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 0, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはA).svg",
+        img: "./assets/img/三角形.svg",
     }, 
     {
         id: 1,
         question: "次の直角三角形において、隣辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 1, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはB).svg",
+        img: "./assets/img/三角形.svg",
     
     }, 
     {
@@ -80,7 +80,7 @@ const questions = [
         question: "次の直角三角形において、隣辺はどの辺ですか？",
         choices: ["AB", "BC", "AC"],
         correctAnswer: 2, // 0から始まるインデックスで指定
-        img: "./assets/img/三角形(θはC).svg"
+        img: "./assets/img/三角形.svg"
     
     }
     // ... その他の問題
@@ -220,7 +220,7 @@ function generateTriangleImage(question) {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         // 頂点に記号を割り振る
-    ctx.font = 'bold 30px Arial'; // フォントサイズを24pxにし、太字にする
+    ctx.font = 'bold 30px Arial'; // フォントサイズを30pxにし、太字にする
     ctx.fillStyle = 'black';
     if (question.id === 1) {
         ctx.fillText('A', 260, 40); // 右上にA
