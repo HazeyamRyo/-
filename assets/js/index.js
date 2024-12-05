@@ -3,10 +3,10 @@
 //問題の画像はassets/imgフォルダに保存されています。
 //画像は、直角三角形の各辺に関連する角度を示しています。
 //各問題には、正しい答えがあります。ユーザーが選択した答えが正しいかどうかを確認します。
-//難易度が３つあります。easyとnormalとhardです。
-//easyの場合、画像は回転しません。normalの場合、画像はランダムな角度で回転します。hardの場合、画像はランダムな角度で回転し、画像は鏡写しになります。
-//正解数が5問に達すると、難易度がnormalに変更されます。
-//正解数が10問に達すると、難易度がhardに変更されます。
+//難易度が３つあります。normalとhardとveryhardです。
+//normalの場合、画像は回転しません。hardの場合、画像はランダムな角度で回転します。veryhardの場合、画像はランダムな角度で回転し、画像は鏡写しになります。
+//正解数が5問に達すると、難易度がhardに変更されます。
+//正解数が10問に達すると、難易度がveryhardに変更されます。
 //正解数が15問に達すると、ゲームが終了します。
 //難易度が変更されると、画面にメッセージが表示されます。
 //ヒントボタンをクリックすると、ヒントが表示されます。
@@ -90,23 +90,23 @@ const questions = [
 
 // 初期化
 let correctAnswers = 0;
-let selectedDifficulty = 'easy'; // 初期難易度を設定
-let difficultyMessageNormalShown = false; // フラグ変数を追加
-let difficultyMessageHardShown = false; // フラグ変数を追加
+let selectedDifficulty = 'normal'; // 初期難易度を設定
+let difficultyMessagehardShown = false; // フラグ変数を追加
+let difficultyMessageveryhardShown = false; // フラグ変数を追加
 displayQuestion(nextQuestion());
 displayScore();
 displayDifficulty(); // 初期化時に難易度を表示
 
 function nextQuestion() {
     // 難易度に応じて処理を変更
-    //難易度hardの場合、画像はランダムな角度で回転し、鏡写しになります。
+    //難易度veryhardの場合、画像はランダムな角度で回転し、鏡写しになります。
     if (correctAnswers >= 15) {
         alert('終了！');
         return;
     } else if (correctAnswers >= 10) {
-        if (selectedDifficulty !== 'hard' && !difficultyMessageHardShown) {
+        if (selectedDifficulty !== 'veryhard' && !difficultyMessageveryhardShown) {
             const difficultyMessageElement = document.createElement('div');
-            difficultyMessageElement.textContent = '難易度が hardになります。ここからは図形が回転し、さらに反転します。';
+            difficultyMessageElement.textContent = '難易度が veryhardになります。ここからは図形が回転し、さらに反転します。';
             difficultyMessageElement.className = 'difficulty-message';
 
             // 他の要素を非表示にする
@@ -124,39 +124,39 @@ function nextQuestion() {
                     element.style.display = '';
                 });
             }, 2000);
-            difficultyMessageHardShown = true; // フラグを更新
+            difficultyMessageveryhardShown = true; // フラグを更新
+        }
+        selectedDifficulty = 'veryhard';
+    } 
+    //難易度hardの場合、画像はランダムな角度で回転します。
+    else if (correctAnswers >= 5) {
+        if (selectedDifficulty !== 'hard' && !difficultyMessagehardShown) {
+            const difficultyMessageElement = document.createElement('div');
+            difficultyMessageElement.textContent = '難易度が hardになります。ここからは図形が回転します。';
+            difficultyMessageElement.className = 'difficulty-message';
+
+            // 他の要素を非表示にする
+            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
+            elementsToHide.forEach(element => {
+                element.style.display = 'none';
+            });
+
+            document.body.appendChild(difficultyMessageElement);
+            setTimeout(() => {
+                difficultyMessageElement.remove();
+
+                // 他の要素を再表示する
+                elementsToHide.forEach(element => {
+                    element.style.display = '';
+                });
+            }, 2000);
+            difficultyMessagehardShown = true; // フラグを更新
         }
         selectedDifficulty = 'hard';
     } 
-    //難易度normalの場合、画像はランダムな角度で回転します。
-    else if (correctAnswers >= 5) {
-        if (selectedDifficulty !== 'normal' && !difficultyMessageNormalShown) {
-            const difficultyMessageElement = document.createElement('div');
-            difficultyMessageElement.textContent = '難易度が normalになります。ここからは図形が回転します。';
-            difficultyMessageElement.className = 'difficulty-message';
-
-            // 他の要素を非表示にする
-            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
-            elementsToHide.forEach(element => {
-                element.style.display = 'none';
-            });
-
-            document.body.appendChild(difficultyMessageElement);
-            setTimeout(() => {
-                difficultyMessageElement.remove();
-
-                // 他の要素を再表示する
-                elementsToHide.forEach(element => {
-                    element.style.display = '';
-                });
-            }, 2000);
-            difficultyMessageNormalShown = true; // フラグを更新
-        }
-        selectedDifficulty = 'normal';
-    } 
-    //難易度easyの場合、画像は回転しません。
+    //難易度normalの場合、画像は回転しません。
     else {
-        selectedDifficulty = 'easy';
+        selectedDifficulty = 'normal';
     }
     displayDifficulty(); // 難易度が変更された後に表示
 
@@ -188,7 +188,12 @@ function displayQuestion(question) {
     question.choices.forEach((choice, index) => {
         const button = document.createElement('button');
         button.textContent = choice;
-        button.addEventListener('click', () => checkAnswer(index, question));
+        button.addEventListener('click', () => {
+            checkAnswer(index, question);
+            // ボタンを無効化
+            disableButtons();
+        });
+
         choicesButtons.appendChild(button);
     });
 
@@ -198,17 +203,31 @@ function displayQuestion(question) {
     const canvas = generateTriangleImage(question);
 
     // 難易度に応じた回転と鏡写し
-    if (question.difficulty === 'easy') {
+    if (question.difficulty === 'normal') {
         canvas.style.transform = 'rotate(0deg)';
-    } else if (question.difficulty === 'normal') {
+    } else if (question.difficulty === 'hard') {
         const randomAngle = Math.floor(Math.random() * 360);
         canvas.style.transform = `rotate(${randomAngle}deg)`;
-    } else if (question.difficulty === 'hard') {
+    } else if (question.difficulty === 'veryhard') {
         const randomAngle = Math.floor(Math.random() * 360);
         canvas.style.transform = `rotate(${randomAngle}deg) scaleX(-1)`;
     }
 
     choicesElement.appendChild(canvas);
+}
+
+function disableButtons() {
+    const buttons = document.querySelectorAll('.choices-buttons button');
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+}
+
+function enableButtons() {
+    const buttons = document.querySelectorAll('.choices-buttons button');
+    buttons.forEach(button => {
+        button.disabled = false;
+    });
 }
 
 function generateTriangleImage(question) {
@@ -255,10 +274,14 @@ function checkAnswer(selectedAnswer, question) {
          // 次の問題を表示
         setTimeout(() => {
         displayQuestion(nextQuestion());
+        enableButtons(); // ボタンを再度有効化
         }, 2000);
     } else {
         resultDiv.textContent = "Wrong! 😢";
         resultDiv.className = "wrong visible";
+        setTimeout(() => {
+            enableButtons(); // ボタンを再度有効化
+            }, 2000);
     }
 
     resultDiv.style.opacity = 1;
