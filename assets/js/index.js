@@ -176,16 +176,20 @@ function getNextQuestion() {
 function displayQuestion(question) {
     const questionElement = document.getElementById('question');
     const choicesElement = document.getElementById('choices');
+   
 
     questionElement.textContent = question.question;
     choicesElement.innerHTML = '';
+    const choicesButtons = document.createElement('div');
+    choicesButtons.className = 'choices-buttons';
+    choicesElement.appendChild(choicesButtons);
 
     // 選択肢を表示
     question.choices.forEach((choice, index) => {
         const button = document.createElement('button');
         button.textContent = choice;
         button.addEventListener('click', () => checkAnswer(index, question));
-        choicesElement.appendChild(button);
+        choicesButtons.appendChild(button);
     });
 
     
@@ -243,32 +247,41 @@ function generateTriangleImage(question) {
 
 function checkAnswer(selectedAnswer, question) {
     const resultDiv = document.getElementById("result");
+
     if (selectedAnswer === question.correctAnswer) {
         resultDiv.textContent = "Correct! 🎉";
-        resultDiv.className = "correct";
+        resultDiv.className = "correct visible";
         correctAnswers++;
+         // 次の問題を表示
         setTimeout(() => {
-            displayQuestion(nextQuestion());
+        displayQuestion(nextQuestion());
         }, 2000);
     } else {
         resultDiv.textContent = "Wrong! 😢";
-        resultDiv.className = "wrong";
+        resultDiv.className = "wrong visible";
     }
-    resultDiv.classList.remove("hidden");
-    resultDiv.style.display = "block"; // 表示する
 
-    // 次の問題に進む場合の例（一定時間後リセット）
+    resultDiv.style.opacity = 1;
+    resultDiv.style.transform = "scale(1)";
+
+    // 一定時間後にリセット
     setTimeout(() => {
-        resultDiv.className = "hidden";
-        resultDiv.style.display = "none"; // 非表示にする
+        resultDiv.style.opacity = 0;
+        resultDiv.style.transform = "scale(0.8)";
+        setTimeout(() => {
+            resultDiv.className = "hidden";
+        }, 500);
     }, 2000);
+
+
     displayScore();
 }
+
 
 //正答数を表示
 function displayScore() {
     const scoreElement = document.getElementById('score');
-    scoreElement.textContent = `正解数: ${correctAnswers}`;
+    scoreElement.textContent = `${correctAnswers}`;
 }
 
 // 正答数が10問に達したら終了

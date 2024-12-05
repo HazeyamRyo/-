@@ -13,22 +13,34 @@
 
 
 <body>
-    <div id="score"></div>
-    <div id="result" class="hidden"></div>
-    <div class="difficulty">
-        <div class="difficultyAlert">現在の難易度</div>
-        <div id="difficulty"></div>
-    </div>
-    <div class="questionText">
-        <div>問題</div>
-        <div id="question"></div>
-    </div>  
-    <div id="choices"></div>
-    <div id="hint" class="hidden">
-        <p class="hintTitle">三角形の辺の名前</p>
-        <img src="./assets/img/三角形辺の名前.gif" alt="" class="hintFigure">
+   <div class="question-container">
+        <div class="header">
+        <div class="score">
+            <div>正解数</div>
+            <div id="score"></div>
+        </div>
+            <div class="difficulty">
+                <div>現在の難易度</div>
+                <div id="difficulty"></div>
+            </div>
+        </div>
+        <div class="questionText">
+            <div id="question"></div>
+            <div id="result" class="hidden"></div>
+        </div>  
+        <div id="choices">
+            <div id="choicesButtons"></div>
+        </div>
+        
     </div>   
-    <button id="hintButton">ヒント表示/非表示</button>
+    
+    <div class="hint-container">
+        <button id="hintButton">ヒント表示/非表示</button>
+        <div id="hint" class="hidden">
+            <p class="hintTitle">三角形の辺の名前</p>
+            <img src="./assets/img/三角形辺の名前.gif" alt="" class="hintFigure">
+        </div>
+    </div>
     
     <script src="./assets/js/index.js"></script>
 </body>
