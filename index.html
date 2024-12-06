@@ -15,13 +15,19 @@
 <body>
    <div class="question-container">
         <div class="header">
-        <div class="score">
-            <div id="scoreText">正解数</div>
-            <div id="score"></div>
-        </div>
+            <div class="score">
+                <div id="scoreText">正解数</div>
+                <div id="score"></div>
+            </div>
             <div class="difficulty">
-                <div id="difficultyText">現在の難易度</div>
-                <div id="difficulty"></div>
+                    <div id="difficultyText">現在の難易度</div>
+                    <div id="difficulty"></div>
+            </div>
+            <div class="goal">
+                <div id="goalText">
+                    <p class="goal-title">目標</p> 
+                    <p class="goal-text">三角形の辺の名前を覚える</p>
+                </div>
             </div>
         </div>
         <div class="questionText">
@@ -35,7 +41,10 @@
     </div>   
     
     <div class="hint-container">
-        <button id="hintButton">ヒント表示/非表示</button>
+        <button id="hintButton">
+            <div>ヒント表示/非表示</div>
+        </button>
+        <p id="hintExplain">問題に間違えたときには、ヒントをみて三角形の辺の名前を確認！</p>
         <div id="hint" class="hidden">
             <p class="hintTitle">三角形の辺の名前</p>
             <img src="./assets/img/三角形辺の名前.gif" alt="" class="hintFigure">

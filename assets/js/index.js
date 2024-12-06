@@ -60,7 +60,7 @@ function updateDifficulty(newDifficulty, message,shown) {
         difficultyMessageElement.className = 'difficulty-message';
 
         // 他の要素を非表示にする
-        const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton, #hint ,#scoreText, #difficultyText');
+        const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton, #hint ,#scoreText, #difficultyText, #hintExplain, goalText');
         elementsToHide.forEach(element => {
             element.style.display = 'none';
         });
