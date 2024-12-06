@@ -91,8 +91,8 @@ const questions = [
 // 初期化
 let correctAnswers = 0;
 let selectedDifficulty = 'normal'; // 初期難易度を設定
-let difficultyMessagehardShown = false; // フラグ変数を追加
-let difficultyMessageveryhardShown = false; // フラグ変数を追加
+let difficultyMessageHardShown = false; // フラグ変数を追加
+let difficultyMessageVeryHardShown = false; // フラグ変数を追加
 displayQuestion(nextQuestion());
 displayScore();
 displayDifficulty(); // 初期化時に難易度を表示
@@ -100,17 +100,17 @@ displayDifficulty(); // 初期化時に難易度を表示
 function nextQuestion() {
     // 難易度に応じて処理を変更
     //難易度veryhardの場合、画像はランダムな角度で回転し、鏡写しになります。
-    if (correctAnswers >= 15) {
+    if (correctAnswers >= 3) {
         alert('終了！');
         return;
-    } else if (correctAnswers >= 10) {
-        if (selectedDifficulty !== 'veryhard' && !difficultyMessageveryhardShown) {
+    } else if (correctAnswers >= 2) {
+        if (selectedDifficulty !== 'veryhard' && !difficultyMessageVeryHardShown) {
             const difficultyMessageElement = document.createElement('div');
             difficultyMessageElement.textContent = '難易度が veryhardになります。ここからは図形が回転し、さらに反転します。';
             difficultyMessageElement.className = 'difficulty-message';
 
             // 他の要素を非表示にする
-            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
+            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton, #hint ,#scoreText, #difficultyText');
             elementsToHide.forEach(element => {
                 element.style.display = 'none';
             });
@@ -123,20 +123,20 @@ function nextQuestion() {
                 elementsToHide.forEach(element => {
                     element.style.display = '';
                 });
-            }, 2000);
-            difficultyMessageveryhardShown = true; // フラグを更新
+            }, 4000);
+            difficultyMessageVeryHardShown = true; // フラグを更新
         }
         selectedDifficulty = 'veryhard';
     } 
     //難易度hardの場合、画像はランダムな角度で回転します。
-    else if (correctAnswers >= 5) {
-        if (selectedDifficulty !== 'hard' && !difficultyMessagehardShown) {
+    else if (correctAnswers >= 1) {
+        if (selectedDifficulty !== 'hard' && !difficultyMessageHardShown) {
             const difficultyMessageElement = document.createElement('div');
             difficultyMessageElement.textContent = '難易度が hardになります。ここからは図形が回転します。';
             difficultyMessageElement.className = 'difficulty-message';
 
             // 他の要素を非表示にする
-            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton');
+            const elementsToHide = document.querySelectorAll('#score, #result, #difficulty, #question, #choices, #hintButton, #scoreText, #difficultyText');
             elementsToHide.forEach(element => {
                 element.style.display = 'none';
             });
@@ -149,8 +149,8 @@ function nextQuestion() {
                 elementsToHide.forEach(element => {
                     element.style.display = '';
                 });
-            }, 2000);
-            difficultyMessagehardShown = true; // フラグを更新
+            }, 4000);
+            difficultyMessageHardShown = true; // フラグを更新
         }
         selectedDifficulty = 'hard';
     } 

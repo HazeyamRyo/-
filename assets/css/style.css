@@ -1,7 +1,8 @@
 /* 全体のスタイル */
 body {
    font-family: 'Roboto', sans-serif;
-   
+   background-image: url(../img/background-image.jpg);
+   background-size: cover;
    margin: 0;
    padding: 20px;
    display: flex;
@@ -129,7 +130,7 @@ body {
    text-align: center;
    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
    z-index: 1000;
-   animation: dragonBallAnimation 3s ease;
+   animation: dragonBallAnimation 4.2s ease;
 }
 
 /* ドラゴンボールっぽいアニメーション */
