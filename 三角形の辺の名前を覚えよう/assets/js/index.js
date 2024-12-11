@@ -38,12 +38,12 @@ displayDifficulty(); // 初期化時に難易度を表示
 
 // 次の問題を取得
 function nextQuestion() {
-    if (correctAnswers >= 3) {
+    if (correctAnswers >= 15) {
         alert('終了！');
         return;
-    } else if (correctAnswers >= 2) {
+    } else if (correctAnswers >= 10) {
         updateDifficulty('veryhard', '難易度が veryhardになります。ここからは図形が回転し、さらに反転します。',difficultyMessageVeryHardShown);
-    } else if (correctAnswers >= 1) {
+    } else if (correctAnswers >= 5) {
         updateDifficulty('hard', '難易度が hardになります。ここからは図形が回転します。',difficultyMessageHardShown);
     } else {
         selectedDifficulty = 'normal';
