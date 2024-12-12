@@ -1,16 +1,3 @@
-// 直角三角形の辺の長さから、三角比を求めるクイズゲームアプリです。
-// imgファイルに格納されている画像に対して、ユーザーが正しい三角比を選択することで、正解率を競います。
-// ユーザーが間違えた場合は、ヒントを確認してもう一度挑戦することができます。
-// また、ユーザーが正解した問題の履歴を確認することができます。
-// jsファイルには、問題と選択肢の生成、正誤判定、ヒントの表示の実装が記述されています。
-// 難易度は、normal, hard, very hardの3段階から選択できます。
-// normalの問題では、./img/normalに格納されている画像からランダムに問題が出題されます。
-// hardの問題では、./img/hardに格納されている画像からランダムに問題が出題されます。
-// veryhardの問題では、./img/veryhardに格納されている画像からランダムに問題が出題されます。
-// cssファイルには、画面のデザインが記述されています。
-// htmlファイルには、画面の構成が記述されています。
-// 5問正解するごとに難易度が上がり、メッセージが表示されます。
-
 const questionTexts = [
     { text : "次の三角形の\\(\\sin\\theta\\)の値を求めなさい。",
       id : 1,
@@ -95,6 +82,7 @@ const questionTexts = [
  let currentQuestion = null;
  let currentQuestionTextIndex = 0; // 現在のquestionTextのインデックス
  let scoreCount = 0; // 正解数
+ let currentChoices = []; // 現在の選択肢を保持する変数
  
  // ボタンの配置をランダムにする
  function shuffleArray(array) {
@@ -160,55 +148,58 @@ const questionTexts = [
  }
  
  let currentImageSrc = ''; // 現在表示されている画像のソースを保持する変数
-
-function displayQuestion(question) {
-    if (!question) return;
-
-    // 問題文を表示
-    const questionTextElement = document.getElementById("questionText");
-    questionTextElement.innerHTML = questionTexts[currentQuestionTextIndex].text;
-    const scoreElement = document.getElementById("score");
-    scoreElement.textContent = scoreCount;
-    // 選択肢を表示
-    const choicesElement = document.getElementById("choices");
-    choicesElement.innerHTML = '';
-    const choicesButtons = document.createElement('div');
-    choicesButtons.className = 'choices-buttons';
-    choicesElement.appendChild(choicesButtons);
-
-    // 画像を表示
-    const imgElement = document.createElement('img');
-    if (currentQuestionTextIndex === 0) {
-        if (selectedDifficulty === 'normal') {
-            currentImageSrc = question.normalImg;
-        } else if (selectedDifficulty === 'hard') {
-            const randomIndex = Math.floor(Math.random() * question.hardImg.length);
-            currentImageSrc = question.hardImg[randomIndex];
-        }
-    }
-    imgElement.src = currentImageSrc;
-    imgElement.alt = "問題の画像";
-    imgElement.className = 'question-image';
-    choicesElement.appendChild(imgElement);
-
-    // 選択肢を表示
-    const choiceData = choices.find(choice => choice.id === question.id);
-    if (choiceData) {
-        const shuffledChoices = shuffleArray([...choiceData.choice]); // 選択肢をシャッフル
-        shuffledChoices.forEach(choice => {
-            const button = document.createElement('button');
-            button.innerHTML = choice; // innerHTMLを使用して数式を表示
-            button.addEventListener('click', () => {
-                checkAnswer(choice, question, questionTexts[currentQuestionTextIndex].id);
-                disableButtons(); // ボタンを無効化
-            });
-            choicesButtons.appendChild(button);
-        });
-    }
-
-    // MathJaxのレンダリングを行う
-    MathJax.typesetPromise();
-}
+ 
+ function displayQuestion(question) {
+     if (!question) return;
+ 
+     // 問題文を表示
+     const questionTextElement = document.getElementById("questionText");
+     questionTextElement.innerHTML = questionTexts[currentQuestionTextIndex].text;
+     const scoreElement = document.getElementById("score");
+     scoreElement.textContent = scoreCount;
+ 
+     // 選択肢を表示
+     const choicesElement = document.getElementById("choices");
+     choicesElement.innerHTML = '';
+     const choicesButtons = document.createElement('div');
+     choicesButtons.className = 'choices-buttons';
+     choicesElement.appendChild(choicesButtons);
+ 
+     // 画像を表示
+     const imgElement = document.createElement('img');
+     if (currentQuestionTextIndex === 0) {
+         if (selectedDifficulty === 'normal') {
+             currentImageSrc = question.normalImg;
+         } else if (selectedDifficulty === 'hard') {
+             const randomIndex = Math.floor(Math.random() * question.hardImg.length);
+             currentImageSrc = question.hardImg[randomIndex];
+         }
+         // 選択肢をシャッフル
+         const choiceData = choices.find(choice => choice.id === question.id);
+         if (choiceData) {
+             currentChoices = shuffleArray([...choiceData.choice]); // 選択肢をシャッフルして保持
+         }
+     }
+     imgElement.src = currentImageSrc;
+     imgElement.alt = "問題の画像";
+     imgElement.className = 'question-image';
+     choicesElement.appendChild(imgElement);
+ 
+     // 選択肢を表示
+     currentChoices.forEach(choice => {
+         const button = document.createElement('button');
+         button.innerHTML = choice; // innerHTMLを使用して数式を表示
+         button.addEventListener('click', () => {
+             checkAnswer(choice, question, questionTexts[currentQuestionTextIndex].id);
+             disableButtons(); // ボタンを無効化
+         });
+         choicesButtons.appendChild(button);
+     });
+ 
+     // MathJaxのレンダリングを行う
+     MathJax.typesetPromise();
+ }
+ 
  // ボタンを無効化
  function disableButtons() {
      const buttons = document.querySelectorAll('.choices-buttons button');
