@@ -129,12 +129,11 @@ const questionTexts = [
  
  // 未選択の問題を追跡するための配列
  let remainingQuestions = [...questions];
- let selectedDifficulty = 'normal'; // 初期難易度
  let currentQuestion = null;
  let currentQuestionTextIndex = 0; // 現在のquestionTextのインデックス
  let scoreCount = 0; // 正解数
  let currentChoices = []; // 現在の選択肢を保持する変数
- let numberOfQuestions = questions.length; // 問題数
+
  
  // ボタンの配置をランダムにする
  function shuffleArray(array) {
@@ -215,10 +214,14 @@ const questionTexts = [
           const questionTextElement = document.getElementById("questionText");
           const choicesElement = document.getElementById("choices");
           const imgElement = document.createElement('img');
+          const scoreElement = document.getElementById("score");
+          const difficultyElement = document.getElementById('difficulty');
           
           questionTextElement.innerHTML = '';
           choicesElement.innerHTML = '';
           imgElement.src = '';
+          scoreElement.textContent = '';
+          difficultyElement.textContent = '';
         }, 500);
             }, 1000);
           return null;
