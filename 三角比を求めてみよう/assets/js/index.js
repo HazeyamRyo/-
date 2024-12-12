@@ -91,9 +91,10 @@ const questionTexts = [
  
  // 未選択の問題を追跡するための配列
  let remainingQuestions = [...questions];
- let selectedDifficulty = 'hard'; // 初期難易度
+ let selectedDifficulty = 'normal'; // 初期難易度
  let currentQuestion = null;
  let currentQuestionTextIndex = 0; // 現在のquestionTextのインデックス
+ let scoreCount = 0; // 正解数
  
  // ボタンの配置をランダムにする
  function shuffleArray(array) {
@@ -125,6 +126,7 @@ const questionTexts = [
          currentQuestionTextIndex++;
          if (currentQuestionTextIndex >= questionTexts.length) {
              currentQuestionTextIndex = 0;
+             scoreCount++;
              currentQuestion = getNextQuestion();
          }
          setTimeout(() => {
@@ -145,6 +147,7 @@ const questionTexts = [
              alert('全ての問題が出題されました！難易度をhardに切り替えます。');
              selectedDifficulty = 'hard';
              remainingQuestions = [...questions]; // 問題をリセット
+             scoreCount = 0; // 正解数をリセット
          } else {
              alert('全ての問題が出題されました！');
              return null;
@@ -164,7 +167,8 @@ function displayQuestion(question) {
     // 問題文を表示
     const questionTextElement = document.getElementById("questionText");
     questionTextElement.innerHTML = questionTexts[currentQuestionTextIndex].text;
-
+    const scoreElement = document.getElementById("score");
+    scoreElement.textContent = scoreCount;
     // 選択肢を表示
     const choicesElement = document.getElementById("choices");
     choicesElement.innerHTML = '';
