@@ -108,9 +108,10 @@ const questionTexts = [
      }
  
      const correctAnswer = choiceData.choice[correctAnswerIndex];
-    
+     const resultDiv = document.getElementById("result");
      if (selectedAnswer === correctAnswer) {
-         alert('正解！');
+        resultDiv.textContent = "Correct! 🎉";
+        resultDiv.className = "correct visible";
          currentQuestionTextIndex++;
          if (currentQuestionTextIndex >= questionTexts.length) {
              currentQuestionTextIndex = 0;
@@ -122,11 +123,24 @@ const questionTexts = [
              enableButtons(); // ボタンを再度有効化
          }, 1000);
      } else {
-         alert('もう一度チャレンジ');
+        resultDiv.textContent = "Wrong! 😢";
+        resultDiv.className = "wrong visible";
          setTimeout(() => {
              enableButtons(); // ボタンを再度有効化
          }, 1000);
      }
+
+     resultDiv.style.opacity = 1;
+     resultDiv.style.transform = "scale(1)";
+
+    // 一定時間後にリセット
+    setTimeout(() => {
+        resultDiv.style.opacity = 0;
+        resultDiv.style.transform = "scale(0.8)";
+        setTimeout(() => {
+            resultDiv.className = "hidden";
+        }, 500);
+    }, 1000);
  }
  
  function getNextQuestion() {
@@ -136,6 +150,7 @@ const questionTexts = [
              selectedDifficulty = 'hard';
              remainingQuestions = [...questions]; // 問題をリセット
              scoreCount = 0; // 正解数をリセット
+             displayDifficulty();
          } else {
              alert('全ての問題が出題されました！');
              return null;
@@ -200,6 +215,12 @@ const questionTexts = [
      MathJax.typesetPromise();
  }
  
+ // 現在の難易度を表示
+ function displayDifficulty() {
+     const difficultyElement = document.getElementById('difficulty');
+     difficultyElement.textContent = selectedDifficulty;
+ }
+ 
  // ボタンを無効化
  function disableButtons() {
      const buttons = document.querySelectorAll('.choices-buttons button');
@@ -219,3 +240,4 @@ const questionTexts = [
  // 初期表示
  currentQuestion = getNextQuestion();
  displayQuestion(currentQuestion);
+ displayDifficulty(); // 初期化時に難易度を表示
