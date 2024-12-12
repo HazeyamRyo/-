@@ -1,11 +1,14 @@
 const questionTexts = [
     { text : "次の三角形の\\(\\sin\\theta\\)の値を求めなさい。",
+      hint : "\\(\\sin\\theta = \\frac{\\text{対辺}}{\\text{斜辺}}\\)です！",
       id : 1,
     },
     { text : "次の三角形の\\(\\cos\\theta\\)の値を求めなさい。",
+      hint : "\\(\\cos\\theta = \\frac{\\text{隣辺}}{\\text{斜辺}}\\)です！",
       id : 2,
     },
     { text : "次の三角形の\\(\\tan\\theta\\)の値を求めなさい。",
+      hint : "\\(\\tan\\theta = \\frac{\\text{対辺}}{\\text{隣辺}}\\)です！",
       id : 3,
     }
  ];
@@ -22,20 +25,40 @@ const questionTexts = [
          id : 132,
      },
      {
+        normalImg : "./assets/img/normal/normal 1-2-√3.svg",
+        hardImg : ["./assets/img/hard/hard 1-2-√3 90.svg","./assets/img/hard/hard 1-2-√3 180.svg","./assets/img/hard/hard 1-2-√3 270.svg"],
+        id : 123,
+    },
+     {
          normalImg : "./assets/img/normal/normal 2-√5-3.svg",
          hardImg : ["./assets/img/hard/hard 2-√5-3 90.svg","./assets/img/hard/hard 2-√5-3 180.svg","./assets/img/hard/hard 2-√5-3 270.svg"],
          id : 253,
      },
+     {
+        normalImg : "./assets/img/normal/normal 2-3-√5.svg",
+        hardImg : ["./assets/img/hard/hard 2-3-√5 90.svg","./assets/img/hard/hard 2-3-√5 180.svg","./assets/img/hard/hard 2-3-√5 270.svg"],
+        id : 235,
+    },
      {
          normalImg : "./assets/img/normal/normal 3-4-5.svg",
          hardImg : ["./assets/img/hard/hard 3-4-5 90.svg","./assets/img/hard/hard 3-4-5 180.svg","./assets/img/hard/hard 3-4-5 270.svg"],
          id : 345,
      },
      {
+        normalImg : "./assets/img/normal/normal 3-5-4.svg",
+        hardImg : ["./assets/img/hard/hard 3-5-4 90.svg","./assets/img/hard/hard 3-5-4 180.svg","./assets/img/hard/hard 3-5-4 270.svg"],
+        id : 354,
+    },
+     {
          normalImg : "./assets/img/normal/normal 5-12-13.svg",
          hardImg : ["./assets/img/hard/hard 5-12-13 90.svg","./assets/img/hard/hard 5-12-13 180.svg","./assets/img/hard/hard 5-12-13 270.svg"],
          id : 51213,
-     }
+     },
+     {
+        normalImg : "./assets/img/normal/normal 5-13-12.svg",
+        hardImg : ["./assets/img/hard/hard 5-13-12 90.svg","./assets/img/hard/hard 5-13-12 180.svg","./assets/img/hard/hard 5-13-12 270.svg"],
+        id : 51312,
+    }
  ];
  
  const choices = [
@@ -54,11 +77,25 @@ const questionTexts = [
          correctNumbertan : 3
      },
      {
+         id : 123,
+         choice : [ "\\(\\frac{\\sqrt{3}}{2}\\)", "\\(\\frac{1}{2}\\)","\\(\\frac{1}{\\sqrt{3}}\\)", "\\(\\frac{\\sqrt{3}}{1}=\\sqrt{3}\\)", "\\(\\frac{2}{1}=2\\)", "\\(\\frac{2}{\\sqrt{3}}\\)"],
+         correctNumberSin : 1,
+         correctNumbercos : 0,
+         correctNumbertan : 2
+     },
+     {
          id : 253,
          choice : [ "\\(\\frac{2}{3}\\)","\\(\\frac{2}{\\sqrt{5}}\\)", "\\(\\frac{\\sqrt{5}}{2}\\)", "\\(\\frac{3}{2}\\)", "\\(\\frac{3}{\\sqrt{5}}\\)", "\\(\\frac{\\sqrt{5}}{3}\\)"],
          correctNumberSin : 0, 
          correctNumbercos : 5,
          correctNumbertan : 1
+     },
+     {   id : 235,
+         choice : [ "\\(\\frac{2}{3}\\)","\\(\\frac{2}{\\sqrt{5}}\\)", "\\(\\frac{\\sqrt{5}}{2}\\)", "\\(\\frac{3}{2}\\)", "\\(\\frac{3}{\\sqrt{5}}\\)", "\\(\\frac{\\sqrt{5}}{3}\\)"],
+         correctNumberSin : 5, 
+         correctNumbercos : 0,
+         correctNumbertan : 2
+
      },  
      {
          id : 345,
@@ -68,12 +105,26 @@ const questionTexts = [
          correctNumbertan : 1
      },
      {
+        id : 354,
+        choice : [ "\\(\\frac{3}{5}\\)", "\\(\\frac{3}{4}\\)", "\\(\\frac{4}{3}\\)", "\\(\\frac{4}{5}\\)", "\\(\\frac{5}{4}\\)","\\(\\frac{5}{3}\\)"],
+        correctNumberSin : 3,
+        correctNumbercos : 0,
+        correctNumbertan : 2
+    },
+     {
          id : 51213,
          choice : ["\\(\\frac{5}{13}\\)","\\(\\frac{5}{12}\\)", "\\(\\frac{12}{5}\\)", "\\(\\frac{12}{13}\\)", "\\(\\frac{13}{12}\\)", "\\(\\frac{13}{5}\\)"],
          correctNumberSin : 0,
          correctNumbercos : 3,
          correctNumbertan : 1,
-     }
+     },
+     {
+        id : 51312,
+        choice : ["\\(\\frac{5}{13}\\)","\\(\\frac{5}{12}\\)", "\\(\\frac{12}{5}\\)", "\\(\\frac{12}{13}\\)", "\\(\\frac{13}{12}\\)", "\\(\\frac{13}{5}\\)"],
+        correctNumberSin : 3,
+        correctNumbercos : 0,
+        correctNumbertan : 2,
+    }
  ];
  
  // 未選択の問題を追跡するための配列
@@ -109,10 +160,12 @@ const questionTexts = [
  
      const correctAnswer = choiceData.choice[correctAnswerIndex];
      const resultDiv = document.getElementById("result");
+     const questionHintElement = document.getElementById("questionHint");
      if (selectedAnswer === correctAnswer) {
         resultDiv.textContent = "Correct! 🎉";
         resultDiv.className = "correct visible";
          currentQuestionTextIndex++;
+         questionHintElement.textContent = '';  //　ヒントの初期化
          if (currentQuestionTextIndex >= questionTexts.length) {
              currentQuestionTextIndex = 0;
              scoreCount++;
@@ -125,6 +178,8 @@ const questionTexts = [
      } else {
         resultDiv.textContent = "Wrong! 😢";
         resultDiv.className = "wrong visible";
+        questionHintElement.textContent = questionTexts[currentQuestionTextIndex].hint;
+        MathJax.typesetPromise(); // MathJaxのレンダリングを行う
          setTimeout(() => {
              enableButtons(); // ボタンを再度有効化
          }, 1000);
@@ -210,7 +265,6 @@ const questionTexts = [
          });
          choicesButtons.appendChild(button);
      });
- 
      // MathJaxのレンダリングを行う
      MathJax.typesetPromise();
  }
