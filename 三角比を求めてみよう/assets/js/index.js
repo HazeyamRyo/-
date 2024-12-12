@@ -236,6 +236,16 @@ const questionTexts = [
          button.disabled = false;
      });
  }
+
+ // ヒントを表示
+function showHint() {
+    const hintElement = document.getElementById('hint');
+    hintElement.classList.toggle('hidden');
+}
+
+// ヒントボタンのイベントリスナー
+const hintButton = document.getElementById('hintButton');
+hintButton.addEventListener('click', () => showHint());
  
  // 初期表示
  currentQuestion = getNextQuestion();
