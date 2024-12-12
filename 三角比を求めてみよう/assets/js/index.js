@@ -91,7 +91,7 @@ const questionTexts = [
  
  // 未選択の問題を追跡するための配列
  let remainingQuestions = [...questions];
- let selectedDifficulty = 'normal'; // 初期難易度
+ let selectedDifficulty = 'hard'; // 初期難易度
  let currentQuestion = null;
  let currentQuestionTextIndex = 0; // 現在のquestionTextのインデックス
  
@@ -130,19 +130,25 @@ const questionTexts = [
          setTimeout(() => {
              displayQuestion(currentQuestion);
              enableButtons(); // ボタンを再度有効化
-         }, 2000);
+         }, 1000);
      } else {
          alert('もう一度チャレンジ');
          setTimeout(() => {
              enableButtons(); // ボタンを再度有効化
-         }, 2000);
+         }, 1000);
      }
  }
  
  function getNextQuestion() {
      if (remainingQuestions.length === 0) {
-         alert('全ての問題が出題されました！');
-         return null;
+         if (selectedDifficulty === 'normal') {
+             alert('全ての問題が出題されました！難易度をhardに切り替えます。');
+             selectedDifficulty = 'hard';
+             remainingQuestions = [...questions]; // 問題をリセット
+         } else {
+             alert('全ての問題が出題されました！');
+             return null;
+         }
      }
      const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
      const nextQuestion = remainingQuestions[randomIndex];
@@ -150,51 +156,55 @@ const questionTexts = [
      return nextQuestion;
  }
  
- function displayQuestion(question) {
-     if (!question) return;
- 
-     // 問題文を表示
-     const questionTextElement = document.getElementById("questionText");
-     questionTextElement.innerHTML = questionTexts[currentQuestionTextIndex].text;
- 
-     // 選択肢を表示
-     const choicesElement = document.getElementById("choices");
-     choicesElement.innerHTML = '';
-     const choicesButtons = document.createElement('div');
-     choicesButtons.className = 'choices-buttons';
-     choicesElement.appendChild(choicesButtons);
- 
-     // 画像を表示
-     const imgElement = document.createElement('img');
-     if (selectedDifficulty === 'normal') {
-         imgElement.src = question.normalImg;
-     } else if (selectedDifficulty === 'hard') {
-         const randomIndex = Math.floor(Math.random() * question.hardImg.length);
-         imgElement.src = question.hardImg[randomIndex];
-     }
-     imgElement.alt = "問題の画像";
-     imgElement.className = 'question-image';
-     choicesElement.appendChild(imgElement);
- 
-     // 選択肢を表示
-     const choiceData = choices.find(choice => choice.id === question.id);
-     if (choiceData) {
-         const shuffledChoices = shuffleArray([...choiceData.choice]); // 選択肢をシャッフル
-         shuffledChoices.forEach(choice => {
-             const button = document.createElement('button');
-             button.innerHTML = choice; // innerHTMLを使用して数式を表示
-             button.addEventListener('click', () => {
-                 checkAnswer(choice, question, questionTexts[currentQuestionTextIndex].id);
-                 disableButtons(); // ボタンを無効化
-             });
-             choicesButtons.appendChild(button);
-         });
-     }
- 
-     // MathJaxのレンダリングを行う
-     MathJax.typesetPromise();
- }
- 
+ let currentImageSrc = ''; // 現在表示されている画像のソースを保持する変数
+
+function displayQuestion(question) {
+    if (!question) return;
+
+    // 問題文を表示
+    const questionTextElement = document.getElementById("questionText");
+    questionTextElement.innerHTML = questionTexts[currentQuestionTextIndex].text;
+
+    // 選択肢を表示
+    const choicesElement = document.getElementById("choices");
+    choicesElement.innerHTML = '';
+    const choicesButtons = document.createElement('div');
+    choicesButtons.className = 'choices-buttons';
+    choicesElement.appendChild(choicesButtons);
+
+    // 画像を表示
+    const imgElement = document.createElement('img');
+    if (currentQuestionTextIndex === 0) {
+        if (selectedDifficulty === 'normal') {
+            currentImageSrc = question.normalImg;
+        } else if (selectedDifficulty === 'hard') {
+            const randomIndex = Math.floor(Math.random() * question.hardImg.length);
+            currentImageSrc = question.hardImg[randomIndex];
+        }
+    }
+    imgElement.src = currentImageSrc;
+    imgElement.alt = "問題の画像";
+    imgElement.className = 'question-image';
+    choicesElement.appendChild(imgElement);
+
+    // 選択肢を表示
+    const choiceData = choices.find(choice => choice.id === question.id);
+    if (choiceData) {
+        const shuffledChoices = shuffleArray([...choiceData.choice]); // 選択肢をシャッフル
+        shuffledChoices.forEach(choice => {
+            const button = document.createElement('button');
+            button.innerHTML = choice; // innerHTMLを使用して数式を表示
+            button.addEventListener('click', () => {
+                checkAnswer(choice, question, questionTexts[currentQuestionTextIndex].id);
+                disableButtons(); // ボタンを無効化
+            });
+            choicesButtons.appendChild(button);
+        });
+    }
+
+    // MathJaxのレンダリングを行う
+    MathJax.typesetPromise();
+}
  // ボタンを無効化
  function disableButtons() {
      const buttons = document.querySelectorAll('.choices-buttons button');
