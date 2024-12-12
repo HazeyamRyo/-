@@ -201,7 +201,7 @@ function getNextQuestion() {
     if (scoreCount === numberOfQuestions) {
         startButton.disabled = false;
         const resultDiv = document.getElementById("result");
-        resultDiv.textContent = "Correct! すべての問題が終わりました 🎉hardにも挑戦してみよう";
+        resultDiv.textContent = "Correct! すべての問題が終わりました 🎉";
         resultDiv.className = "correct visible";
         // 一定時間後にリセット
         setTimeout(() => {
