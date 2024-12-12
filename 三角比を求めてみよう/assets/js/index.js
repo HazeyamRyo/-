@@ -134,6 +134,7 @@ const questionTexts = [
  let currentQuestionTextIndex = 0; // 現在のquestionTextのインデックス
  let scoreCount = 0; // 正解数
  let currentChoices = []; // 現在の選択肢を保持する変数
+ let numberOfQuestions = questions.length; // 問題数
  
  // ボタンの配置をランダムにする
  function shuffleArray(array) {
@@ -199,17 +200,28 @@ const questionTexts = [
  }
  
  function getNextQuestion() {
-     if (remainingQuestions.length === 0) {
-         if (selectedDifficulty === 'normal') {
-             alert('全ての問題が出題されました！難易度をhardに切り替えます。');
-             selectedDifficulty = 'hard';
-             remainingQuestions = [...questions]; // 問題をリセット
-             scoreCount = 0; // 正解数をリセット
-             displayDifficulty();
-         } else {
-             alert('全ての問題が出題されました！');
-             return null;
-         }
+     if (scoreCount === numberOfQuestions) {
+        startButton.disabled = false;    
+        const resultDiv = document.getElementById("result");
+        resultDiv.textContent = "Correct! すべての問題が終わりました 🎉hardにも挑戦してみよう";
+        resultDiv.className = "correct visible";
+            // 一定時間後にリセット
+        setTimeout(() => {
+        resultDiv.style.opacity = 0;
+        resultDiv.style.transform = "scale(0.8)";
+        setTimeout(() => {
+            resultDiv.className = "hidden";
+            // すべての問題が出題されたら、要素を空にする
+          const questionTextElement = document.getElementById("questionText");
+          const choicesElement = document.getElementById("choices");
+          const imgElement = document.createElement('img');
+          
+          questionTextElement.innerHTML = '';
+          choicesElement.innerHTML = '';
+          imgElement.src = '';
+        }, 500);
+            }, 1000);
+          return null;
      }
      const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
      const nextQuestion = remainingQuestions[randomIndex];
@@ -300,8 +312,26 @@ function showHint() {
 // ヒントボタンのイベントリスナー
 const hintButton = document.getElementById('hintButton');
 hintButton.addEventListener('click', () => showHint());
+
+// 初期設定するイベントリスナー
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', () => {
+    const scoreInput = document.getElementById('numberOfQuestionsInput');
+    numberOfQuestions = parseInt(scoreInput.value, 10);
+
+    const difficultyInputs = document.getElementsByName('difficulty');
+    difficultyInputs.forEach(input => {
+        if (input.checked) {
+            selectedDifficulty = input.value;
+        }
+    });
+
+    remainingQuestions = [...questions]; // 問題をリセット
+    scoreCount = 0; // 正解数をリセット
+    displayDifficulty();
+    currentQuestion = getNextQuestion();
+    displayQuestion(currentQuestion);
+    startButton.disabled = true;
+});
+
  
- // 初期表示
- currentQuestion = getNextQuestion();
- displayQuestion(currentQuestion);
- displayDifficulty(); // 初期化時に難易度を表示
