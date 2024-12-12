@@ -1,14 +1,206 @@
-/* 直角三角形の辺の長さから、三角比を求めるクイズゲームアプリです。
-imgファイルに格納されている画像に対して、ユーザーが正しい三角比を選択することで、正解率を競います。
-ユーザーが間違えた場合は、ヒントを確認してもう一度挑戦することができます。
-難易度は、normal, hard, very hardの3段階から選択できます。
-hardの問題では、直角三角形が回転します。
-veryhardの問題では、直角三角形が回転しまた、鏡写しになります。
-また、ユーザーが正解した問題の履歴を確認することができます。
-jsファイルには、問題の生成、正誤判定、ヒントの表示、問題の回転、鏡写しの実装が記述されています。
-cssファイルには、画面のデザインが記述されています。
-htmlファイルには、画面の構成が記述されています。
-5問正解するごとに難易度が上がり、メッセージが表示されます。 */
+/* ベーススタイルのリセット（sanitize.cssを補完） */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f7f9fc;
+    color: #333;
+    background-image: url(../img/background-image.jpg);
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start; 
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-container {
+    flex: 3;
+    width: 60%;
+    margin-right: 20px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.hint-container {
+    flex: 1;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #999;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.7s ease-out;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header > div {
+    flex: 1;
+    text-align: center;
+    margin: 0 10px;
+}
+
+.header .score, .header .difficulty, .header .goal {
+    background-color: #e8f4fa;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.goal-title, #scoreText, #difficultyText {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+.goal-text {
+    font-size: 1.2rem;
+}
+
+.questionText {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#questionText, #questionHint {
+    color: #fff;
+    background-color: #333;
+}
+
+.choices{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.question-image {
+    order: 1;
+    display: block;
+    width: 30%;
+    height: auto;
+    margin: 20px auto;
+}
+
+.choices-buttons {
+    order: 2;
+    display: flex;
+    width: 70%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.choices-buttons button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    width: 25%;
+    height: auto;
+    font-size: 2rem; /* 文字を大きくする */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.choices-buttons button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.wrong {
+    background-color: #dc3545;
+    color: white;
+}
+
 .hidden {
     display: none;
- }
+}
+
+.hint-container button {
+    background-color: #ffc107;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.hint-container button:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+.hint-container .hintTitle {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.setting {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.setting label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.setting input {
+    padding: 5px;
+    font-size: 1rem;
+}
+
+#startButton {
+    background-color: #17a2b8;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#startButton:hover {
+    background-color: #138496;
+    transform: scale(1.1);
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+button {
+    animation: fadeIn 0.3s ease-out;
+}

@@ -21,51 +21,48 @@ htmlファイルには、画面の構成が記述されています。
     <title>三角比を求めよう</title>
 </head>
 <body>
-    <div class="question-container">
-        <div class="header">
-            <div class="score">
-                <div id="scoreText">クリアした問題数</div>
-                <div id="score"></div>
-            </div>
-            <div class="difficulty">
-                    <div id="difficultyText">現在の難易度</div>
-                    <div id="difficulty"></div>
-            </div>
-            <div class="goal">
-                <div id="goalText">
-                    <p class="goal-title">目標</p> 
-                    <p class="goal-text">三角形の辺の長さから三角比を求める</p>
+    <div class="container">
+        <div class="question-container">
+            <div class="header">
+                <div class="score">
+                    <div id="scoreText">クリアした問題数</div>
+                    <div id="score"></div>
+                </div>
+                <div class="difficulty">
+                        <div id="difficultyText">現在の難易度</div>
+                        <div id="difficulty"></div>
+                </div>
+                <div class="goal">
+                    <div id="goalText">
+                        <p class="goal-title">目標</p> 
+                        <p class="goal-text">三角形の辺の長さから三角比を求める</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="questionText">
-            <div id="questionText"></div>
-            <div id="questionHint"></div>
-            <div id="result" class="hidden"></div>
-        </div>  
-        <div id="choices">
-            <div id="choicesButtons"></div>
-        </div>
-        
-    </div>   
-    
-    <div class="hint-container">
-        <button id="hintButton">
-            <div>ヒント表示/非表示</div>
-        </button>
-        <p id="hintExplain">三角比の定義を確認できます。</p>
-        <div id="hint" class="hidden">
-            <div>
-            <p class="hintTitle">三角形の辺の名前</p>
-            <img id="hintImage" src="./assets/img/ヒント/三角形辺の名前.gif" alt="三角形の辺の名前">
+            <div class="questionText">
+                <div id="questionText"></div>
+                <div id="questionHint"></div>
+                <div id="result" class="hidden"></div>
+            </div>  
+            <div id="choices" class="choices">
+                <div id="choicesButtons"></div>
             </div>
-            <div>
-                <p class="hintTitle">三角比の定義</p>
-                <img id="hintImage" src="./assets/img/ヒント/fft23.jpg" alt="三角形の辺の名前">
+            
+        </div>   
+        <div class="hint-container">
+            <button id="hintButton">
+                <div>ヒント表示/非表示</div>
+            </button>
+            <p id="hintExplain">三角比の定義を確認できます。</p>
+            <div id="hint" class="hidden">
+                <div>
+                    <p class="hintTitle">三角比の定義</p>
+                    <img id="hintImage" src="./assets/img/ヒント/fft23.jpg" alt="三角形の辺の名前">
+                    </div>
                 </div>
             </div>
+         </div>
     </div>
-
     <div>
         <div class="setting">
             <label for="scoreInput">問題数を設定:</label>

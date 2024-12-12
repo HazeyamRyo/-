@@ -333,5 +333,10 @@ startButton.addEventListener('click', () => {
     displayDifficulty();
     currentQuestion = getNextQuestion();
     displayQuestion(currentQuestion);
-    startButton.disabled = true;
+    if(numberOfQuestions === 0) {
+        alert("問題数を入力してください");
+        startButton.disabled = false;
+    }else{
+        startButton.disabled = true;
+    }
 });
