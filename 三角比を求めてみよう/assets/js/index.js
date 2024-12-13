@@ -197,6 +197,7 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
     }, 1000);
 }
 
+
 function getNextQuestion() {
     if (scoreCount === numberOfQuestions) {
         startButton.disabled = false;
@@ -221,6 +222,11 @@ function getNextQuestion() {
                 imgElement.src = '';
                 scoreElement.textContent = '';
                 difficultyElement.textContent = '';
+
+                // question-containerを非表示
+                document.querySelector('.container').classList.add('hidden');
+                // settingを表示
+                document.querySelector('.setting').classList.remove('hidden');
             }, 500);
         }, 1000);
         return null;
@@ -333,10 +339,14 @@ startButton.addEventListener('click', () => {
     displayDifficulty();
     currentQuestion = getNextQuestion();
     displayQuestion(currentQuestion);
-    if(numberOfQuestions === 0) {
+
+    if (numberOfQuestions === 0) {
         alert("問題数を入力してください");
         startButton.disabled = false;
-    }else{
+    } else {
         startButton.disabled = true;
+        // question-containerを表示
+        document.querySelector('.container').classList.remove('hidden');
+        document.querySelector('.setting').classList.add('hidden');
     }
 });

@@ -1,14 +1,3 @@
-<!-- 直角三角形の辺の長さから、三角比を求めるクイズゲームアプリです。
-imgファイルに格納されている画像に対して、ユーザーが正しい三角比を選択することで、正解率を競います。
-ユーザーが間違えた場合は、ヒントを確認してもう一度挑戦することができます。
-難易度は、normal, hard, very hardの3段階から選択できます。
-hardの問題では、直角三角形が回転します。
-veryhardの問題では、直角三角形が回転しまた、鏡写しになります。
-また、ユーザーが正解した問題の履歴を確認することができます。
-jsファイルには、問題の生成、正誤判定、ヒントの表示、問題の回転、鏡写しの実装が記述されています。
-cssファイルには、画面のデザインが記述されています。
-htmlファイルには、画面の構成が記述されています。
-5問正解するごとに難易度が上がり、メッセージが表示されます。 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,11 +6,10 @@ htmlファイルには、画面の構成が記述されています。
     <link rel="stylesheet" href="./assets/css/sanitize.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-      
     <title>三角比を求めよう</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container hidden">
         <div class="question-container">
             <div class="header">
                 <div class="score">
@@ -29,8 +17,8 @@ htmlファイルには、画面の構成が記述されています。
                     <div id="score"></div>
                 </div>
                 <div class="difficulty">
-                        <div id="difficultyText">現在の難易度</div>
-                        <div id="difficulty"></div>
+                    <div id="difficultyText">現在の難易度</div>
+                    <div id="difficulty"></div>
                 </div>
                 <div class="goal">
                     <div id="goalText">
@@ -47,7 +35,6 @@ htmlファイルには、画面の構成が記述されています。
             <div id="choices" class="choices">
                 <div id="choicesButtons"></div>
             </div>
-            
         </div>   
         <div class="hint-container">
             <button id="hintButton">
@@ -58,27 +45,27 @@ htmlファイルには、画面の構成が記述されています。
                 <div>
                     <p class="hintTitle">三角比の定義</p>
                     <img id="hintImage" src="./assets/img/ヒント/fft23.jpg" alt="三角形の辺の名前">
-                    </div>
                 </div>
             </div>
-         </div>
+        </div>
     </div>
     <div>
         <div class="setting">
-            <label for="scoreInput">問題数を設定:</label>
-            <input type="number" id="numberOfQuestionsInput" min="0" value="0">
-        </div>
-
-        <div class="setting">
-            <label for="scoreInput">難易度を設定:</label>
-            <input type="radio" id="difficultyInput" name="difficulty" value="normal" checked>normal
-            <input type="radio" id="difficultyInput" name="difficulty" value="hard" checked>hard
-        </div>
-        <div class="setting">
-            <button id="startButton">スタート</button>
+            <h1>三角比を求めよう</h1>
+            <div>
+                <label for="scoreInput">問題数を設定:</label>
+                <input type="number" id="numberOfQuestionsInput" min="0" value="0">
+            </div>
+            <div>
+                <label for="scoreInput">難易度を設定:</label>
+                <input type="radio" id="difficultyInput" name="difficulty" value="normal" checked>normal
+                <input type="radio" id="difficultyInput" name="difficulty" value="hard">hard
+            </div>
+            <div>
+                <button id="startButton">スタート</button>
+            </div>
         </div>
     </div>
     <script src="./assets/js/index.js"></script>
 </body>
-
-     
+</html>
