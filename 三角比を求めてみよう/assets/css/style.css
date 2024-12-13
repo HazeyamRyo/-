@@ -77,9 +77,16 @@ body {
     text-align: center;
 }
 
-#questionText, #questionHint {
+#questionText {
     color: #fff;
     background-color: #333;
+    margin-bottom: 10px;
+}
+
+#questionHint{
+    color: #333;
+    background-color: #fff;
+    margin-bottom: 10px;
 }
 
 .choices{

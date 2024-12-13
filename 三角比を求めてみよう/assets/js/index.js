@@ -143,61 +143,6 @@ function shuffleArray(array) {
     return array;
 }
 
-function checkAnswer(selectedAnswer, question, questionTextId) {
-    const choiceData = choices.find(choice => choice.id === question.id);
-    if (!choiceData) return;
-
-    // 正解のインデックスを取得
-    let correctAnswerIndex;
-    if (questionTextId === 1) {
-        correctAnswerIndex = choiceData.correctNumberSin;
-    } else if (questionTextId === 2) {
-        correctAnswerIndex = choiceData.correctNumbercos;
-    } else if (questionTextId === 3) {
-        correctAnswerIndex = choiceData.correctNumbertan;
-    }
-
-    const correctAnswer = choiceData.choice[correctAnswerIndex];
-    const resultDiv = document.getElementById("result");
-    const questionHintElement = document.getElementById("questionHint");
-    if (selectedAnswer === correctAnswer) {
-        resultDiv.textContent = "大正解 🎉";
-        resultDiv.className = "correct visible";
-        currentQuestionTextIndex++;
-        questionHintElement.textContent = '';  // ヒントの初期化
-        if (currentQuestionTextIndex >= questionTexts.length) {
-            currentQuestionTextIndex = 0;
-            scoreCount++;
-            currentQuestion = getNextQuestion();
-        }
-        setTimeout(() => {
-            displayQuestion(currentQuestion);
-            enableButtons(); // ボタンを再度有効化
-        }, 1000);
-    } else {
-        resultDiv.textContent = "残念。もう一度チャレンジ 😢";
-        resultDiv.className = "wrong visible";
-        questionHintElement.textContent = questionTexts[currentQuestionTextIndex].hint;
-        MathJax.typesetPromise(); // MathJaxのレンダリングを行う
-        setTimeout(() => {
-            enableButtons(); // ボタンを再度有効化
-        }, 1000);
-    }
-
-    resultDiv.style.opacity = 1;
-    resultDiv.style.transform = "scale(1)";
-
-    // 一定時間後にリセット
-    setTimeout(() => {
-        resultDiv.style.opacity = 0;
-        resultDiv.style.transform = "scale(0.8)";
-        setTimeout(() => {
-            resultDiv.className = "visibility-hidden";
-        }, 500);
-    }, 1000);
-}
-
-
 // 現在の難易度を表示
 function displayDifficulty() {
     const difficultyElement = document.getElementById('difficulty');
@@ -222,13 +167,6 @@ function enableButtons() {
 
 let startTime, endTime; // タイマー用の変数
 let isTimeAttackMode = false; // タイムアタックモードのフラグ
-
-function enableButtons() {
-    const buttons = document.querySelectorAll('.choices-buttons button');
-    buttons.forEach(button => {
-        button.disabled = false;
-    });
-}
 
 // ヒントを表示
 function showHint() {
@@ -365,50 +303,7 @@ function getNextQuestion() {
     return nextQuestion;
 }
 
-//次の問題を表示
-function getNextQuestion() {
-    if (scoreCount === numberOfQuestions) {
-        if (isTimeAttackMode) {
-            endTime = Date.now(); // タイマーを終了
-            const elapsedTime = (endTime - startTime) / 1000; // 経過時間を秒で計算
-            alert(`タイムアタックモード終了！経過時間: ${elapsedTime}秒`);
-        }
-        startButton.disabled = false;
-        const resultDiv = document.getElementById("result");
-        resultDiv.textContent = "Correct! すべての問題が終わりました 🎉";
-        resultDiv.className = "correct visible";
-        // 一定時間後にリセット
-        setTimeout(() => {
-            resultDiv.style.opacity = 0;
-            resultDiv.style.transform = "scale(0.8)";
-            setTimeout(() => {
-                resultDiv.className = "hidden";
-                // すべての問題が出題されたら、要素を空にする
-                const questionTextElement = document.getElementById("questionText");
-                const choicesElement = document.getElementById("choices");
-                const imgElement = document.createElement('img');
-                const scoreElement = document.getElementById("score");
-                const difficultyElement = document.getElementById('difficulty');
 
-                questionTextElement.innerHTML = '';
-                choicesElement.innerHTML = '';
-                imgElement.src = '';
-                scoreElement.textContent = '';
-                difficultyElement.textContent = '';
-
-                // question-containerを非表示
-                document.querySelector('.container').classList.add('hidden');
-                // settingを表示
-                document.querySelector('.setting').classList.remove('hidden');
-            }, 500);
-        }, 1000);
-        return null;
-    }
-    const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
-    const nextQuestion = remainingQuestions[randomIndex];
-    remainingQuestions.splice(randomIndex, 1); // 選ばれた問題を未選択の配列から削除
-    return nextQuestion;
-}
 
 let currentImageSrc = ''; // 現在表示されている画像のソースを保持する変数
 
@@ -453,11 +348,68 @@ function displayQuestion(question) {
         const button = document.createElement('button');
         button.innerHTML = choice; // innerHTMLを使用して数式を表示
         button.addEventListener('click', () => {
-            checkAnswer(choice, question, questionTexts[currentQuestionTextIndex].id);
             disableButtons(); // ボタンを無効化
+            checkAnswer(choice, question, questionTexts[currentQuestionTextIndex].id);
+           
         });
         choicesButtons.appendChild(button);
     });
     // MathJaxのレンダリングを行う
     MathJax.typesetPromise();
+}
+
+
+function checkAnswer(selectedAnswer, question, questionTextId) {
+    const choiceData = choices.find(choice => choice.id === question.id);
+    if (!choiceData) return;
+
+    // 正解のインデックスを取得
+    let correctAnswerIndex;
+    if (questionTextId === 1) {
+        correctAnswerIndex = choiceData.correctNumberSin;
+    } else if (questionTextId === 2) {
+        correctAnswerIndex = choiceData.correctNumbercos;
+    } else if (questionTextId === 3) {
+        correctAnswerIndex = choiceData.correctNumbertan;
+    }
+
+    const correctAnswer = choiceData.choice[correctAnswerIndex];
+    const resultDiv = document.getElementById("result");
+    const questionHintElement = document.getElementById("questionHint");
+    if (selectedAnswer === correctAnswer) {
+        resultDiv.textContent = "大正解 🎉";
+        resultDiv.className = "correct visible";
+        currentQuestionTextIndex++;
+        questionHintElement.textContent = "";
+        if (currentQuestionTextIndex >= questionTexts.length) {
+            currentQuestionTextIndex = 0;
+            scoreCount++;
+            currentQuestion = getNextQuestion();
+        }
+        setTimeout(() => {
+            displayQuestion(currentQuestion);
+            enableButtons(); // ボタンを再度有効化
+        }, 2000);
+    } else {
+        resultDiv.textContent = "残念。もう一度チャレンジ 😢";
+        resultDiv.className = "wrong visible";
+        questionHintElement.textContent = questionTexts[currentQuestionTextIndex].hint;
+        MathJax.typesetPromise(); // MathJaxのレンダリングを行う
+        setTimeout(() => {
+            enableButtons(); // ボタンを再度有効化
+        }, 2000);
+    }
+
+    resultDiv.style.opacity = 1;
+    resultDiv.style.transform = "scale(1)";
+
+    // 一定時間後にリセット
+    setTimeout(() => {
+        resultDiv.style.opacity = 0;
+        resultDiv.style.transform = "scale(0.8)";
+        setTimeout(() => {
+            resultDiv.className = "visibility-hidden";
+
+        }, 1000);
+    }, 1000);
 }
