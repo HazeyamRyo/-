@@ -154,6 +154,7 @@ function disableButtons() {
     const buttons = document.querySelectorAll('.choices-buttons button');
     buttons.forEach(button => {
         button.disabled = true;
+        button.style.cursor = 'not-allowed';
     });
 }
 
@@ -162,6 +163,7 @@ function enableButtons() {
     const buttons = document.querySelectorAll('.choices-buttons button');
     buttons.forEach(button => {
         button.disabled = false;
+        button.style.cursor = 'pointer';
     });
 }
 
@@ -376,6 +378,7 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
     const correctAnswer = choiceData.choice[correctAnswerIndex];
     const resultDiv = document.getElementById("result");
     const questionHintElement = document.getElementById("questionHint");
+
     if (selectedAnswer === correctAnswer) {
         resultDiv.textContent = "大正解 🎉";
         resultDiv.className = "correct visible";
@@ -387,29 +390,20 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
             currentQuestion = getNextQuestion();
         }
         setTimeout(() => {
+            resultDiv.className = "visibility-hidden";
             displayQuestion(currentQuestion);
             enableButtons(); // ボタンを再度有効化
         }, 2000);
     } else {
-        resultDiv.textContent = "残念。もう一度チャレンジ 😢";
+        resultDiv.textContent = "不正解 😢";
         resultDiv.className = "wrong visible";
         questionHintElement.textContent = questionTexts[currentQuestionTextIndex].hint;
-        MathJax.typesetPromise(); // MathJaxのレンダリングを行う
+        MathJax.typesetPromise();
         setTimeout(() => {
+            resultDiv.className = "visibility-hidden";
             enableButtons(); // ボタンを再度有効化
         }, 2000);
     }
-
-    resultDiv.style.opacity = 1;
-    resultDiv.style.transform = "scale(1)";
-
-    // 一定時間後にリセット
-    setTimeout(() => {
-        resultDiv.style.opacity = 0;
-        resultDiv.style.transform = "scale(0.8)";
-        setTimeout(() => {
-            resultDiv.className = "visibility-hidden";
-
-        }, 1000);
-    }, 1000);
 }
+   
+
