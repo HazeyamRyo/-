@@ -198,8 +198,181 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
 }
 
 
+// 現在の難易度を表示
+function displayDifficulty() {
+    const difficultyElement = document.getElementById('difficulty');
+    difficultyElement.textContent = selectedDifficulty;
+}
+
+// ボタンを無効化
+function disableButtons() {
+    const buttons = document.querySelectorAll('.choices-buttons button');
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+}
+
+// ボタンを有効化
+function enableButtons() {
+    const buttons = document.querySelectorAll('.choices-buttons button');
+    buttons.forEach(button => {
+        button.disabled = false;
+    });
+}
+
+let startTime, endTime; // タイマー用の変数
+let isTimeAttackMode = false; // タイムアタックモードのフラグ
+
+function enableButtons() {
+    const buttons = document.querySelectorAll('.choices-buttons button');
+    buttons.forEach(button => {
+        button.disabled = false;
+    });
+}
+
+// ヒントを表示
+function showHint() {
+    const hintElement = document.getElementById('hint');
+    hintElement.classList.toggle('hidden');
+}
+
+// ヒントボタンのイベントリスナー
+const hintButton = document.getElementById('hintButton');
+hintButton.addEventListener('click', () => showHint());
+
+// モード選択のイベントリスナー
+const modeInputs = document.getElementsByName('mode');
+modeInputs.forEach(input => {
+    input.addEventListener('change', () => {
+        const numberOfQuestionsContainer = document.getElementById('numberOfQuestionsContainer');
+        const timeAttackInfo = document.getElementById('timeAttackInfo');
+        if (input.value === 'timeattack' && input.checked) {
+            numberOfQuestionsContainer.classList.add('hidden');
+            timeAttackInfo.classList.remove('hidden');
+        } else {
+            numberOfQuestionsContainer.classList.remove('hidden');
+            timeAttackInfo.classList.add('hidden');
+        }
+    });
+});
+
+// 初期設定するイベントリスナー
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', () => {
+    const scoreInput = document.getElementById('numberOfQuestionsInput');
+    numberOfQuestions = parseInt(scoreInput.value, 10);
+
+    const difficultyInputs = document.getElementsByName('difficulty');
+    difficultyInputs.forEach(input => {
+        if (input.checked) {
+            selectedDifficulty = input.value;
+        }
+    });
+
+    const modeInputs = document.getElementsByName('mode');
+    modeInputs.forEach(input => {
+        if (input.checked) {
+            isTimeAttackMode = input.value === 'timeattack';
+        }
+    });
+
+    if (isTimeAttackMode) {
+        numberOfQuestions = 5; // タイムアタックモードでは問題数を5問に固定
+        startCountdown(); // カウントダウンを開始
+    } else {
+        startGame();
+    }
+});
+
+function startCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    countdownElement.classList.remove('hidden');
+    let countdown = 3;
+    countdownElement.textContent = countdown;
+
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+
+        if (countdown === 0) {
+            clearInterval(countdownInterval);
+            countdownElement.classList.add('hidden');
+            startGame();
+        }
+    }, 1000);
+}
+
+function startGame() {
+    startTime = Date.now(); // タイマーを開始
+    remainingQuestions = [...questions]; // 問題をリセット
+    scoreCount = 0; // 正解数をリセット
+    displayDifficulty();
+    currentQuestion = getNextQuestion();
+    displayQuestion(currentQuestion);
+
+    if (numberOfQuestions === 0 && !isTimeAttackMode) {
+        alert("問題数を入力してください");
+        startButton.disabled = false;
+    } else {
+        startButton.disabled = true;
+        // question-containerを表示
+        document.querySelector('.container').classList.remove('hidden');
+        document.querySelector('.setting').classList.add('hidden');
+    }
+}
+
 function getNextQuestion() {
     if (scoreCount === numberOfQuestions) {
+        if (isTimeAttackMode) {
+            endTime = Date.now(); // タイマーを終了
+            const elapsedTime = (endTime - startTime) / 1000; // 経過時間を秒で計算
+            alert(`タイムアタックモード終了！経過時間: ${elapsedTime}秒`);
+        }
+        startButton.disabled = false;
+        const resultDiv = document.getElementById("result");
+        resultDiv.textContent = "Correct! すべての問題が終わりました 🎉";
+        resultDiv.className = "correct visible";
+        // 一定時間後にリセット
+        setTimeout(() => {
+            resultDiv.style.opacity = 0;
+            resultDiv.style.transform = "scale(0.8)";
+            setTimeout(() => {
+                resultDiv.className = "hidden";
+                // すべての問題が出題されたら、要素を空にする
+                const questionTextElement = document.getElementById("questionText");
+                const choicesElement = document.getElementById("choices");
+                const imgElement = document.createElement('img');
+                const scoreElement = document.getElementById("score");
+                const difficultyElement = document.getElementById('difficulty');
+
+                questionTextElement.innerHTML = '';
+                choicesElement.innerHTML = '';
+                imgElement.src = '';
+                scoreElement.textContent = '';
+                difficultyElement.textContent = '';
+
+                // question-containerを非表示
+                document.querySelector('.container').classList.add('hidden');
+                // settingを表示
+                document.querySelector('.setting').classList.remove('hidden');
+            }, 500);
+        }, 1000);
+        return null;
+    }
+    const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+    const nextQuestion = remainingQuestions[randomIndex];
+    remainingQuestions.splice(randomIndex, 1); // 選ばれた問題を未選択の配列から削除
+    return nextQuestion;
+}
+
+//次の問題を表示
+function getNextQuestion() {
+    if (scoreCount === numberOfQuestions) {
+        if (isTimeAttackMode) {
+            endTime = Date.now(); // タイマーを終了
+            const elapsedTime = (endTime - startTime) / 1000; // 経過時間を秒で計算
+            alert(`タイムアタックモード終了！経過時間: ${elapsedTime}秒`);
+        }
         startButton.disabled = false;
         const resultDiv = document.getElementById("result");
         resultDiv.textContent = "Correct! すべての問題が終わりました 🎉";
@@ -288,65 +461,3 @@ function displayQuestion(question) {
     // MathJaxのレンダリングを行う
     MathJax.typesetPromise();
 }
-
-// 現在の難易度を表示
-function displayDifficulty() {
-    const difficultyElement = document.getElementById('difficulty');
-    difficultyElement.textContent = selectedDifficulty;
-}
-
-// ボタンを無効化
-function disableButtons() {
-    const buttons = document.querySelectorAll('.choices-buttons button');
-    buttons.forEach(button => {
-        button.disabled = true;
-    });
-}
-
-// ボタンを有効化
-function enableButtons() {
-    const buttons = document.querySelectorAll('.choices-buttons button');
-    buttons.forEach(button => {
-        button.disabled = false;
-    });
-}
-
-// ヒントを表示
-function showHint() {
-    const hintElement = document.getElementById('hint');
-    hintElement.classList.toggle('hidden');
-}
-
-// ヒントボタンのイベントリスナー
-const hintButton = document.getElementById('hintButton');
-hintButton.addEventListener('click', () => showHint());
-
-// 初期設定するイベントリスナー
-const startButton = document.getElementById('startButton');
-startButton.addEventListener('click', () => {
-    const scoreInput = document.getElementById('numberOfQuestionsInput');
-    numberOfQuestions = parseInt(scoreInput.value, 10);
-
-    const difficultyInputs = document.getElementsByName('difficulty');
-    difficultyInputs.forEach(input => {
-        if (input.checked) {
-            selectedDifficulty = input.value;
-        }
-    });
-
-    remainingQuestions = [...questions]; // 問題をリセット
-    scoreCount = 0; // 正解数をリセット
-    displayDifficulty();
-    currentQuestion = getNextQuestion();
-    displayQuestion(currentQuestion);
-
-    if (numberOfQuestions === 0) {
-        alert("問題数を入力してください");
-        startButton.disabled = false;
-    } else {
-        startButton.disabled = true;
-        // question-containerを表示
-        document.querySelector('.container').classList.remove('hidden');
-        document.querySelector('.setting').classList.add('hidden');
-    }
-});
