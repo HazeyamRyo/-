@@ -161,7 +161,7 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
     const resultDiv = document.getElementById("result");
     const questionHintElement = document.getElementById("questionHint");
     if (selectedAnswer === correctAnswer) {
-        resultDiv.textContent = "Correct! 🎉";
+        resultDiv.textContent = "大正解 🎉";
         resultDiv.className = "correct visible";
         currentQuestionTextIndex++;
         questionHintElement.textContent = '';  // ヒントの初期化
@@ -175,7 +175,7 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
             enableButtons(); // ボタンを再度有効化
         }, 1000);
     } else {
-        resultDiv.textContent = "Wrong! 😢";
+        resultDiv.textContent = "残念。もう一度チャレンジ 😢";
         resultDiv.className = "wrong visible";
         questionHintElement.textContent = questionTexts[currentQuestionTextIndex].hint;
         MathJax.typesetPromise(); // MathJaxのレンダリングを行う
@@ -192,7 +192,7 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
         resultDiv.style.opacity = 0;
         resultDiv.style.transform = "scale(0.8)";
         setTimeout(() => {
-            resultDiv.className = "hidden";
+            resultDiv.className = "visibility-hidden";
         }, 500);
     }, 1000);
 }

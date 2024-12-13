@@ -133,9 +133,6 @@ body {
     color: white;
 }
 
-.hidden {
-    display: none;
-}
 
 .hint-container button {
     background-color: #ffc107;
@@ -249,4 +246,8 @@ button {
 
 .hidden {
     display: none;
+}
+
+.visibility-hidden {
+    visibility: hidden;
 }
