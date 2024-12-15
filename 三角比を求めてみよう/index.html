@@ -11,26 +11,24 @@
 <body>
     <div class="container hidden">
         <div class="question-container">
-            <div class="header">
-                <div class="score">
-                    <div id="scoreText">クリアした問題数</div>
+            <li class="header">
+                <ul class="score">
+                    <div id="scoreText">問題番号</div>
                     <div id="score"></div>
-                </div>
-                <div class="difficulty">
-                    <div id="difficultyText">現在の難易度</div>
+                </ul>
+                <ul class="difficulty">
+                    <div id="difficultyText">難易度</div>
                     <div id="difficulty"></div>
-                </div>
-                <div class="goal">
-                    <div id="goalText">
-                        <p class="goal-title">目標</p> 
-                        <p class="goal-text">三角形の辺の長さから三角比を求める</p>
-                    </div>
-                </div>
-                <div class="timer">
-                    <div id="timerText">経過時間</div>
+                </ul>
+                <ul class="goal">
+                    <p class="goal-title">目標</p> 
+                    <p class="goal-text">三角形の辺の長さから三角比を求める</p>
+                </ul>
+                <ul class="timer">
+                    <div id="timerText">time</div>
                     <div id="timer">0.0秒</div>
-                </div>
-            </div>
+                </ul>
+            </li>
             <div class="questionText">
                 <div id="questionText"></div>
                 <div id="questionHint"></div>
@@ -69,8 +67,8 @@
                 <input type="radio" id="difficultyInput" name="difficulty" value="hard">hard
             </div>
             <div>
-                <label for="modeInput">モードを設定:</label>
-                <input type="radio" id="modeInput" name="mode" value="normal" checked>通常モード
+                <label for="modeInput">モードを設定</label> <br>
+                <input type="radio" id="modeInput" name="mode" value="normal" checked>通常モード<br>
                 <input type="radio" id="modeInput" name="mode" value="timeattack">タイムアタックモード
             </div>
             <div>

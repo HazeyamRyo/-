@@ -234,7 +234,7 @@ function displayQuestion(question) {
     const questionTextElement = document.getElementById("questionText");
     questionTextElement.innerHTML = questionTexts[currentQuestionTextIndex].text;
     const scoreElement = document.getElementById("score");
-    scoreElement.textContent = scoreCount;
+    scoreElement.textContent = scoreCount+1;
 
     // 選択肢を表示
     const choicesElement = document.getElementById("choices");

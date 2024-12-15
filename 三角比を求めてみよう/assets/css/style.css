@@ -49,7 +49,7 @@ body {
     margin-bottom: 20px;
 }
 
-.header > div {
+.header > ul {
     flex: 1;
     text-align: center;
     margin: 0 10px;
@@ -122,7 +122,7 @@ body {
     padding: 10px 20px;
     width: 25%;
     height: auto;
-    font-size: 2rem; /* 文字を大きくする */
+    font-size: 1.5rem; /* 文字を大きくする */
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
@@ -190,6 +190,7 @@ body {
 .setting input[type="number"],
 .setting input[type="radio"] {
     margin-bottom: 20px;
+
 }
 
 .setting input[type="number"] {
@@ -293,26 +294,79 @@ button {
 }
 
 /* スマートフォン向けのスタイル */
+/* スマートフォン向けのスタイル */
 @media (max-width: 600px) {
     .container {
         flex-direction: column;
         align-items: center;
+        font-size: 0.8rem;
+        margin: 10px auto;
+        padding: 10px;
     }
 
     .question-container, .hint-container {
         width: 100%;
         margin-right: 0;
+        margin-bottom: 20px;
     }
 
+    .question-image {
+        width: 60%;
+    }
+
+    .choices-buttons {
+        width: 40%;
+    }
     .choices-buttons button {
         width: 100%;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .setting {
-        width: 90%;         
+        width: 90%;
+        margin: 10px auto;
+        padding: 10px;
     }
-}
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .header > ul {
+        margin: 5px;
+    }
+
+    .score,.difficulty, .timer {
+        width: 50%;
+        padding: 0;
+    }
+
+    .goal {
+        width: 60%;
+        padding: 0;
+    }
+
+    .questionText {
+        font-size: 1.2rem;
+    }
+
+    .goal-title, #scoreText, #difficultyText {
+        font-size: 0.8rem;
+    }
+
+    .goal-text {
+        font-size: 0.8rem;
+    }
+
+    #timer {
+        width: 40%;
+        font-size: 1.0rem;
+    }
+    }
+
 
 /* タブレット向けのスタイル */
 @media (min-width: 601px) and (max-width: 1024px) {
@@ -328,10 +382,20 @@ button {
 
     .choices-buttons button {
         width: 45%;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
     .setting {
         width: 80%;
+    }
+
+
+    .score,.difficulty, .timer {
+        width: 50%;
+        padding: 0;
+    }
+
+    #timer {
+        font-size: 1.5rem;
     }
 }
