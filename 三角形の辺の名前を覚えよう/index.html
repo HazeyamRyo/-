@@ -5,59 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/sanitize.css">
     <link rel="stylesheet" href="./assets/css/style.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-      
-    <title>三角比を理解しよう</title>
+    <title>三角形の辺の名前を覚えよう</title>
 </head>
-
-
 <body>
-   <div class="question-container">
-        <div class="header">
-            <div class="score">
-                <div id="scoreText">正解数</div>
-                <div id="score"></div>
-            </div>
-            <div class="difficulty">
-                    <div id="difficultyText">現在の難易度</div>
+    <div class="container hidden">
+        <div class="question-container">
+            <li class="header">
+                <ul class="score">
+                    <div id="scoreText">問題番号</div>
+                    <div id="score"></div>
+                </ul>
+                <ul class="difficulty">
+                    <div id="difficultyText">難易度</div>
                     <div id="difficulty"></div>
-            </div>
-            <div class="goal">
-                <div id="goalText">
+                </ul>
+                <ul class="goal">
                     <p class="goal-title">目標</p> 
                     <p class="goal-text">三角形の辺の名前を覚える</p>
+                </ul>
+                <ul class="timer">
+                    <div id="timerText">time</div>
+                    <div id="timer">0.0秒</div>
+                </ul>
+            </li>
+            <div class="questionText">
+                <div id="questionText"></div>
+                <div id="questionHint"></div>
+                <div id="result" class="visibility-hidden"></div>
+            </div>  
+            <div id="choices" class="choices">
+                <div id="choicesButtons"></div>
+            </div>
+        </div>   
+        <div class="hint-container">
+            <button id="hintButton">
+                <div>ヒント表示/非表示</div>
+            </button>
+            <p id="hintExplain">三角比の辺の名前をを確認できます。</p>
+            <div id="hint" class="hidden">
+                <div>
+                    <p class="hintTitle">三角比の辺の名前</p>
+                    <img id="hintImage" src="assets/img/三角形辺の名前.gif" alt="三角形の辺の名前">
                 </div>
             </div>
         </div>
-        <div class="questionText">
-            <div id="question"></div>
-            <div id="result" class="hidden"></div>
-        </div>  
-        <div id="choices">
-            <div id="choicesButtons"></div>
-        </div>
-        
-    </div>   
-    
-    <div class="hint-container">
-        <button id="hintButton">
-            <div>ヒント表示/非表示</div>
-        </button>
-        <p id="hintExplain">問題に間違えたときには、ヒントをみて三角形の辺の名前を確認！</p>
-        <div id="hint" class="hidden">
-            <p class="hintTitle">三角形の辺の名前</p>
-            <img src="./assets/img/三角形辺の名前.gif" alt="" class="hintFigure">
+    </div>
+    <div>
+        <div class="setting">
+            <h1>三角比の辺の名前を覚えよう</h1>
+            <div id="numberOfQuestionsContainer">
+                <label for="scoreInput">問題数を設定:</label>
+                <input type="number" id="numberOfQuestionsInput" min="0" value="0">
+            </div>
+            <div id="timeAttackInfo" class="hidden">
+                タイムアタックモードの問題数は5問です。
+            </div>
+            <div>
+                <label for="scoreInput">難易度を設定:</label>
+                <input type="radio" id="difficultyInput" name="difficulty" value="normal" checked>normal
+                <input type="radio" id="difficultyInput" name="difficulty" value="hard">hard
+            </div>
+            <div>
+                <label for="modeInput">モードを設定</label> <br>
+                <input type="radio" id="modeInput" name="mode" value="normal" checked>通常モード<br>
+                <input type="radio" id="modeInput" name="mode" value="timeattack">タイムアタックモード
+            </div>
+            <div>
+                <button id="startButton">スタート</button>
+            </div>
         </div>
     </div>
-    
+    <div id="countdown" class="hidden">3</div>
     <script src="./assets/js/index.js"></script>
 </body>
-
-</html>      
-        
-    
-    
-    
-    
-
+</html>
