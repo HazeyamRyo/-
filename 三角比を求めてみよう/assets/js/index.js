@@ -193,10 +193,8 @@ function getNextQuestion() {
         resultDiv.className = "correct visible";
         // 一定時間後にリセット
         setTimeout(() => {
-            resultDiv.style.opacity = 0;
-            resultDiv.style.transform = "scale(0.8)";
             setTimeout(() => {
-                resultDiv.className = "hidden";
+                resultDiv.className = "visibility-hidden";
                 resetGameElements();
             }, 500);
         }, 1000);
@@ -214,11 +212,13 @@ function resetGameElements() {
     const choicesElement = document.getElementById("choices");
     const scoreElement = document.getElementById("score");
     const difficultyElement = document.getElementById('difficulty');
+    const resultDiv = document.getElementById("result");
 
     questionTextElement.innerHTML = '';
     choicesElement.innerHTML = '';
     scoreElement.textContent = '';
     difficultyElement.textContent = '';
+    resultDiv.className = "visibility-hidden"; 
 
     // question-containerを非表示
     document.querySelector('.container').classList.add('hidden');
