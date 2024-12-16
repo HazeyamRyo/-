@@ -160,8 +160,8 @@ function startGame() {
     currentQuestion = getNextQuestion();
     displayQuestion(currentQuestion);
 
-    if (numberOfQuestions === 0 && !isTimeAttackMode) {
-        alert("問題数を入力してください");
+    if ((numberOfQuestions === 0 || numberOfQuestions >= 10)  && !isTimeAttackMode) {
+        alert("問題数を入力してください。問題数の上限は9問です。");
         startButton.disabled = false;
     } else {
         startButton.disabled = true;
