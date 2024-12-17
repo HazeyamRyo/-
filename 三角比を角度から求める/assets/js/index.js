@@ -59,7 +59,7 @@ for (let angle = 1; angle < 90; angle++) {
 //normalの問題文を生成する関数たち
 function selectTextNormal(value,angle,sct) {
     let questionText, correctAnswer;
-        questionText = `次の角度の\\(\\${sct}\\theta\\)の値を求めなさい: ${angle}°`;
+        questionText = `\\(\\${sct}${angle}°\\)の値を求めなさい `;
         correctAnswer = value;
     return { questionText, correctAnswer };
 }
@@ -80,13 +80,13 @@ function selectTextHard(sinValue,cosValue,tanValue,angle) {
     let questionText, correctAnswer;
 
     if (questionType === 0) {
-        questionText = `次の角度の\\(\\sin\\theta\\)の値を求めなさい: ${angle}°`;
+        questionText = `\\(\\sin${angle}°\\)の値を求めなさい`;
         correctAnswer = sinValue;
     } else if (questionType === 1) {
-        questionText = `次の角度の\\(\\cos\\theta\\)の値を求めなさい: ${angle}°`;
+        questionText = `\\(\\cos${angle}°\\)の値を求めなさい`;
         correctAnswer = cosValue;
     } else {
-        questionText = `次の角度の\\(\\tan\\theta\\)の値を求めなさい: ${angle}°`;
+        questionText = `\\(\\tan${angle}°\\)の値を求めなさい`;
         correctAnswer = tanValue;
     }
 
@@ -95,3 +95,24 @@ function selectTextHard(sinValue,cosValue,tanValue,angle) {
    
 console.log(normalQuestions);
 console.log(hardQuestions);
+
+//問題の難易度を取得する関数
+function getNextQuestion(difficulty) {
+    if (difficulty === "normal") {
+        return selectQuestion(normalQuestions);
+    } else {
+        return selectQuestion(hardQuestions);
+    }
+}
+//問題をランダムに選ぶ関数
+function selectQuestion(questions) {
+    const questionIndex = Math.floor(Math.random() * questions.length);
+    return questions[questionIndex];
+}
+//問題を表示する関数
+function showQuestion(question) {
+    const questionElement = document.getElementById("questionText");
+    questionElement.innerHTML = question.question;  
+} 
+
+
