@@ -283,6 +283,17 @@ startButton.addEventListener('click', () => {
         const timerElement = document.querySelector('.timer');
         timerElement.classList.add('hidden');
     }
+
+    //ヒントの設定
+    const hintNormal = document.getElementById('30-45-60hint');
+    const hintHard = document.getElementById('1-89hint');
+    if (selectedDifficulty === "normal") {
+        hintNormal.classList.remove('hidden');
+        hintHard.classList.add('hidden');
+    } else {
+        hintNormal.classList.add('hidden');
+        hintHard.classList.remove('hidden');
+    }
 });
 
 // カウントダウンを開始
