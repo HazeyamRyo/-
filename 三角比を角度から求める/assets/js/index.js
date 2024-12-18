@@ -31,10 +31,11 @@ normalQuestionsContaner.forEach((question) => {
     const cosValue = question.choices[question.correctCos];
     const tanValue = question.choices[question.correctTan];
     const angle = question.angle;
+    const choices = question.choices;
 
-    push(sinValue,angle,"sin");
-    push(cosValue,angle,"cos");
-    push(tanValue,angle,"tan");
+    push(sinValue,angle,"sin",choices);
+    push(cosValue,angle,"cos",choices);
+    push(tanValue,angle,"tan",choices);
    });
     
 
@@ -64,13 +65,14 @@ function selectTextNormal(value,angle,sct) {
     return { questionText, correctAnswer };
 }
 
-function push(value,angle,sct){
+function push(value,angle,sct,choices){
   let { questionText, correctAnswer } = selectTextNormal(value,angle,`${sct}`);
   normalQuestions.push({
       id: angle,
       angle: angle,
       question: questionText,
-      correctAnswer: correctAnswer
+      correctAnswer: correctAnswer,
+      choices: choices
   });
 }
 
@@ -96,7 +98,7 @@ function selectTextHard(sinValue,cosValue,tanValue,angle) {
 console.log(normalQuestions);
 console.log(hardQuestions);
 
-//問題の難易度を取得する関数
+//問題の難易度を取得し問題を選択する
 function getNextQuestion(difficulty) {
     if (difficulty === "normal") {
         return selectQuestion(normalQuestions);
@@ -109,10 +111,201 @@ function selectQuestion(questions) {
     const questionIndex = Math.floor(Math.random() * questions.length);
     return questions[questionIndex];
 }
+
 //問題を表示する関数
 function showQuestion(question) {
     const questionElement = document.getElementById("questionText");
     questionElement.innerHTML = question.question;  
 } 
 
+//答え合わせをする関数
+function checkAnswer(question, selectedAnswer) {
+    const correctAnswer = question.correctAnswer;
+    const resultDiv = document.getElementById("result");
+    const questionHintElement = document.getElementById("questionHint")
+    
+    if (selectedAnswer === correctAnswer) {
+        resultDiv.textContent = "大正解 🎉";
+        resultDiv.className = "correct visible";
+        questionHintElement.textContent = "";
+        setTimeout(() => {
+            resultDiv.className = "visibility-hidden";
+            generateQuestion(selectedDifficulty); // 次の問題を生成
+            enableButtons(); // ボタンを再度有効化
+        }, 2000);
+    } else {
+        resultDiv.textContent = "不正解 😢";
+        resultDiv.className = "wrong visible";
+        MathJax.typesetPromise();
+        setTimeout(() => {
+            resultDiv.className = "visibility-hidden";
+            enableButtons(); // ボタンを再度有効化
+        }, 2000);
+    }
+}
 
+// ボタンについての関数
+
+// ボタンを無効化
+function disableButtons() {
+    const buttons = document.querySelectorAll('.choices-buttons button');
+    buttons.forEach(button => {
+        button.disabled = true;
+        button.style.cursor = 'not-allowed';
+    });
+}
+// ボタンを有効化
+function enableButtons() {
+    const buttons = document.querySelectorAll('.choices-buttons button');
+    buttons.forEach(button => {
+        button.disabled = false;
+        button.style.cursor = 'pointer';
+    });
+}
+//ボタンを生成する
+function createButtons(currentQuestion) {
+    const buttonsContainer = document.getElementById("choicesButtons");
+    buttonsContainer.innerHTML = "";
+    currentQuestion.choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.textContent = choice;
+        button.className = "";
+        button.addEventListener("click", () => {
+            disableButtons();
+            checkAnswer(currentQuestion, choice);
+        });
+        buttonsContainer.appendChild(button);
+    });
+}
+
+//問題を生成する処理
+function generateQuestion(difficulty) {
+    scoreCount++;
+    displayScore();
+    const userAnswer = document.getElementById("userAnswer");
+    const checkButton = document.getElementById("checkButton");
+    if(difficulty === "normal"){
+        const currentQuestion = getNextQuestion("normal");
+        showQuestion(currentQuestion);
+        createButtons(currentQuestion);
+        userAnswer.classList.add("hidden");
+        checkButton.classList.add("hidden");
+    }
+    if(difficulty === "hard"){
+        const currentQuestion = getNextQuestion("hard");
+        showQuestion(currentQuestion);
+        const button =document.getElementById("checkButton");
+        button.addEventListener("click", () => {
+        checkAnswer(currentQuestion, userAnswer.value);
+        });
+    }
+    
+     // MathJaxのレンダリングを行う
+     MathJax.typesetPromise();
+}
+
+//ステータスを表示する関数たち
+// 現在の難易度を表示
+function displayDifficulty() {
+    const difficultyElement = document.getElementById('difficulty');
+    difficultyElement.textContent = selectedDifficulty;
+}
+// 現在の問題数を表示
+function displayScore() {
+    const scoreElement = document.getElementById('score');
+    scoreElement.textContent = scoreCount+1;
+}
+
+// settingの処理
+// モード選択のイベントリスナー
+const modeInputs = document.getElementsByName('mode');
+modeInputs.forEach(input => {
+    input.addEventListener('change', () => {
+        const numberOfQuestionsContainer = document.getElementById('numberOfQuestionsContainer');
+        const timeAttackInfo = document.getElementById('timeAttackInfo');
+        if (input.value === 'timeattack' && input.checked) {
+            numberOfQuestionsContainer.classList.add('hidden');
+            timeAttackInfo.classList.remove('hidden');
+        } else {
+            numberOfQuestionsContainer.classList.remove('hidden');
+            timeAttackInfo.classList.add('hidden');
+        }
+    });
+});
+
+// 初期設定するイベントリスナー
+scoreCount = -1; // 正解数をリセット
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', () => {
+    const scoreInput = document.getElementById('numberOfQuestionsInput');
+    numberOfQuestions = parseInt(scoreInput.value, 10);
+
+    const difficultyInputs = document.getElementsByName('difficulty');
+    difficultyInputs.forEach(input => {
+        if (input.checked) {
+            selectedDifficulty = input.value;
+        }
+    });
+
+    const modeInputs = document.getElementsByName('mode');
+    modeInputs.forEach(input => {
+        if (input.checked) {
+            isTimeAttackMode = input.value === 'timeattack';
+        }
+    });
+
+    if (isTimeAttackMode) {
+        numberOfQuestions = 5; // タイムアタックモードでは問題数を5問に固定
+        startCountdown(); // カウントダウンを開始
+    } else {
+        startGame(selectedDifficulty); // ゲームを開始
+        const timerElement = document.querySelector('.timer');
+        timerElement.classList.add('hidden');
+    }
+});
+
+// カウントダウンを開始
+function startCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    countdownElement.classList.remove('hidden');
+    let countdown = 3;
+    countdownElement.textContent = countdown;
+
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+
+        if (countdown === 0) {
+            clearInterval(countdownInterval);
+            countdownElement.classList.add('hidden');
+            startGame(selectedDifficulty);
+        }
+    }, 1000);
+}
+
+// ゲームを開始
+function startGame(difficulty) {
+    startTime = Date.now(); // タイマーを開始
+    if (isTimeAttackMode) {
+        timerInterval = setInterval(updateTimer, 100); // タイマーを更新
+    }
+    displayDifficulty();//難易度を表示
+    displayScore();//問題数を表示
+    generateQuestion(difficulty);//問題を生成
+    if ((numberOfQuestions === 0 || numberOfQuestions >= 10)  && !isTimeAttackMode) {
+        alert("問題数を入力してください。問題数の上限は9問です。");
+        startButton.disabled = false;
+    } else {
+        startButton.disabled = true;
+        // question-containerを表示
+        document.querySelector('.container').classList.remove('hidden');
+        document.querySelector('.setting').classList.add('hidden');
+    }
+}
+
+// タイマーを更新
+function updateTimer() {
+    const timerElement = document.getElementById('timer');
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    timerElement.textContent = `${elapsedTime.toFixed(1)}秒`;
+}
