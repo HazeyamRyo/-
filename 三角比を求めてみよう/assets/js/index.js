@@ -160,14 +160,14 @@ function startGame() {
     currentQuestion = getNextQuestion();
     displayQuestion(currentQuestion);
 
-    if ((numberOfQuestions === 0 || numberOfQuestions >= 10)  && !isTimeAttackMode) {
-        alert("問題数を入力してください。問題数の上限は9問です。");
-        startButton.disabled = false;
-    } else {
-        startButton.disabled = true;
+    if ((numberOfQuestions >= 1 && numberOfQuestions <= 9) | isTimeAttackMode) {
         // question-containerを表示
         document.querySelector('.container').classList.remove('hidden');
         document.querySelector('.setting').classList.add('hidden');
+        startButton.disabled = true;
+    } else {
+        alert("問題数を入力してください。問題数の上限は9問です。");
+        startButton.disabled = false;
     }
 }
 
@@ -316,10 +316,11 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
         resultDiv.className = "wrong visible";
         questionHintElement.textContent = questionTexts[currentQuestionTextIndex].hint;
         MathJax.typesetPromise();
+        modetime =  (isTimeAttackMode) ? 4000 : 2000;
         setTimeout(() => {
             resultDiv.className = "visibility-hidden";
             enableButtons(); // ボタンを再度有効化
-        }, 2000);
+        }, modetime);
     }
 }
    
