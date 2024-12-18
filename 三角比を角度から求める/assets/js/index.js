@@ -169,17 +169,21 @@ function createButtons(currentQuestion) {
     currentQuestion.choices.forEach(choice => {
         const button = document.createElement("button");
         button.textContent = choice;
-        button.className = "";
         button.addEventListener("click", () => {
             disableButtons();
             checkAnswer(currentQuestion, choice);
         });
         buttonsContainer.appendChild(button);
+        buttonsContainer.classList.add("choices-buttons");
     });
 }
 
 //問題を生成する処理
 function generateQuestion(difficulty) {
+    if (scoreCount === numberOfQuestions-1) {
+    resetGame();
+    return;
+    };//問題数が終わっていたらリセット
     scoreCount++;
     displayScore();
     const userAnswer = document.getElementById("userAnswer");
@@ -292,15 +296,56 @@ function startGame(difficulty) {
     displayDifficulty();//難易度を表示
     displayScore();//問題数を表示
     generateQuestion(difficulty);//問題を生成
-    if ((numberOfQuestions === 0 || numberOfQuestions >= 10)  && !isTimeAttackMode) {
-        alert("問題数を入力してください。問題数の上限は9問です。");
-        startButton.disabled = false;
-    } else {
-        startButton.disabled = true;
+    if ((numberOfQuestions >= 1 && numberOfQuestions <= 9) | isTimeAttackMode) {
         // question-containerを表示
         document.querySelector('.container').classList.remove('hidden');
         document.querySelector('.setting').classList.add('hidden');
+        startButton.disabled = true;
+    } else {
+        alert("問題数を入力してください。問題数の上限は9問です。");
+        startButton.disabled = false;
     }
+}
+
+function resetGame() {
+    if (isTimeAttackMode) {
+        endTime = Date.now(); // タイマーを終了
+        clearInterval(timerInterval); // タイマーを停止
+        const elapsedTime = (endTime - startTime) / 1000; // 経過時間を秒で計算
+        alert(`タイムアタックモード終了！経過時間: ${elapsedTime}秒`);
+    }
+    startButton.disabled = false;
+    const resultDiv = document.getElementById("result");
+    resultDiv.textContent = "すべての問題が終わりました 🎉お疲れ様でした。";
+    resultDiv.className = "correct visible";
+    // 一定時間後にリセット
+    setTimeout(() => {
+        setTimeout(() => {
+            resultDiv.className = "visibility-hidden";
+            resetGameElements();
+        }, 500);
+    }, 1000);
+    return null;
+}
+
+// ゲーム要素をリセット
+function resetGameElements() {
+    const questionTextElement = document.getElementById("questionText");
+    const choicesElement = document.getElementById("choices");
+    const scoreElement = document.getElementById("score");
+    const difficultyElement = document.getElementById('difficulty');
+    const resultDiv = document.getElementById("result");
+
+    questionTextElement.innerHTML = '';
+    choicesElement.innerHTML = '';
+    scoreElement.textContent = '';
+    difficultyElement.textContent = '';
+    resultDiv.className = "visibility-hidden"; 
+
+    // question-containerを非表示
+    document.querySelector('.container').classList.add('hidden');
+    // settingを表示
+    document.querySelector('.setting').classList.remove('hidden');
 }
 
 // タイマーを更新
