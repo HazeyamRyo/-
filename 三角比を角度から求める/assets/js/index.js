@@ -276,7 +276,7 @@ startButton.addEventListener('click', () => {
     });
 
     if (isTimeAttackMode) {
-        numberOfQuestions = 5; // タイムアタックモードでは問題数を5問に固定
+        numberOfQuestions = 10; // タイムアタックモードでは問題数を5問に固定
         startCountdown(); // カウントダウンを開始
     } else {
         startGame(selectedDifficulty); // ゲームを開始
