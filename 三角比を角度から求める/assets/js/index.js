@@ -165,6 +165,10 @@ function enableButtons() {
 //ボタンを生成する
 function createButtons(currentQuestion) {
     const buttonsContainer = document.getElementById("choicesButtons");
+    if (!buttonsContainer) {
+        console.error("buttonContainer is not found");
+        return;
+    }
     buttonsContainer.innerHTML = "";
     currentQuestion.choices.forEach(choice => {
         const button = document.createElement("button");
@@ -212,13 +216,26 @@ function generateQuestion(difficulty) {
 // 現在の難易度を表示
 function displayDifficulty() {
     const difficultyElement = document.getElementById('difficulty');
-    difficultyElement.textContent = selectedDifficulty;
+    if (selectedDifficulty === "normal") {
+        difficultyElement.textContent = "30°, 45°, 60°の三角比の値";
+    } else {
+        difficultyElement.textContent = "1°から89°までの三角比の値";
+    }
 }
 // 現在の問題数を表示
 function displayScore() {
     const scoreElement = document.getElementById('score');
     scoreElement.textContent = scoreCount+1;
 }
+// ヒントを表示
+function showHint() {
+    const hintElement = document.getElementById('hint');
+    hintElement.classList.toggle('hidden');
+}
+
+// ヒントボタンのイベントリスナー
+const hintButton = document.getElementById('hintButton');
+hintButton.addEventListener('click', showHint);
 
 // settingの処理
 // モード選択のイベントリスナー
@@ -238,9 +255,9 @@ modeInputs.forEach(input => {
 });
 
 // 初期設定するイベントリスナー
-scoreCount = -1; // 正解数をリセット
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', () => {
+    scoreCount = -1; // 正解数をリセット
     const scoreInput = document.getElementById('numberOfQuestionsInput');
     numberOfQuestions = parseInt(scoreInput.value, 10);
 
@@ -331,21 +348,24 @@ function resetGame() {
 // ゲーム要素をリセット
 function resetGameElements() {
     const questionTextElement = document.getElementById("questionText");
-    const choicesElement = document.getElementById("choices");
+    const choicesElement = document.getElementById("choicesButtons");
     const scoreElement = document.getElementById("score");
     const difficultyElement = document.getElementById('difficulty');
     const resultDiv = document.getElementById("result");
 
-    questionTextElement.innerHTML = '';
-    choicesElement.innerHTML = '';
-    scoreElement.textContent = '';
-    difficultyElement.textContent = '';
-    resultDiv.className = "visibility-hidden"; 
+    if (questionTextElement) questionTextElement.innerHTML = '';
+    if (choicesElement) choicesElement.innerHTML = '';
+    if (scoreElement) scoreElement.textContent = '';
+    if (difficultyElement) difficultyElement.textContent = '';
+    if (resultDiv) resultDiv.className = "visibility-hidden"; 
 
     // question-containerを非表示
-    document.querySelector('.container').classList.add('hidden');
+    const containerElement = document.querySelector('.container');
+    if (containerElement) containerElement.classList.add('hidden');
+    
     // settingを表示
-    document.querySelector('.setting').classList.remove('hidden');
+    const settingElement = document.querySelector('.setting');
+    if (settingElement) settingElement.classList.remove('hidden');
 }
 
 // タイマーを更新
