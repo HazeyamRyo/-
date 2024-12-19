@@ -119,7 +119,7 @@ function showQuestion(question) {
 } 
 
 //答え合わせをする関数
-function checkAnswer(question, selectedAnswer) {
+function checkAnswer(question, selectedAnswer, errorTime) {
     const correctAnswer = question.correctAnswer;
     const resultDiv = document.getElementById("result");
     
@@ -138,7 +138,7 @@ function checkAnswer(question, selectedAnswer) {
         setTimeout(() => {
             resultDiv.className = "visibility-hidden";
             enableButtons(); // ボタンを再度有効化
-        }, 2000);
+        }, errorTime);
     }
 }
 
@@ -173,7 +173,7 @@ function createButtons(currentQuestion) {
         button.textContent = choice;
         button.addEventListener("click", () => {
             disableButtons();
-            checkAnswer(currentQuestion, choice);
+            checkAnswer(currentQuestion, choice, errorTime);
         });
         buttonsContainer.appendChild(button);
         buttonsContainer.classList.add("choices-buttons");
@@ -255,6 +255,14 @@ function checkMatch(event){
     }
 }
 
+//resetボタンの処理
+const resetButton = document.getElementById('resetButton');
+resetButton.addEventListener('click', () => {
+    resetGameElements();
+    startButton.disabled = false;
+});
+
+
 // settingの処理
 // モード選択のイベントリスナー
 const modeInputs = document.getElementsByName('mode');
@@ -265,9 +273,11 @@ modeInputs.forEach(input => {
         if (input.value === 'timeattack' && input.checked) {
             numberOfQuestionsContainer.classList.add('hidden');
             timeAttackInfo.classList.remove('hidden');
+            errorTime = 4000;
         } else {
             numberOfQuestionsContainer.classList.remove('hidden');
             timeAttackInfo.classList.add('hidden');
+            errorTime = 2000;
         }
     });
 });

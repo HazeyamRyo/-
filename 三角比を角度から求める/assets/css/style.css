@@ -184,6 +184,22 @@ body {
    animation: wrongAnimation 0.6s ease;
 }
 
+.resetButton{
+   display: flex;
+   justify-content: right;
+   align-items: center;
+}
+#resetButton {
+   background-color: #fdd01c;
+   color: white;
+   border: none;
+   border-radius: 5px;
+   padding: 5px 10px;
+   margin-top: 20px;
+   font-size: 1.5rem;
+   cursor: pointer;
+   transition: background-color 0.3s, transform 0.2s;
+}
 
 .hint-container button {
    background-color: #ffc107;
