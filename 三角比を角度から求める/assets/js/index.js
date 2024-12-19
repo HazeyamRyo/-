@@ -122,12 +122,10 @@ function showQuestion(question) {
 function checkAnswer(question, selectedAnswer) {
     const correctAnswer = question.correctAnswer;
     const resultDiv = document.getElementById("result");
-    const questionHintElement = document.getElementById("questionHint")
     
     if (selectedAnswer === correctAnswer) {
         resultDiv.textContent = "大正解 🎉";
         resultDiv.className = "correct visible";
-        questionHintElement.textContent = "";
         setTimeout(() => {
             resultDiv.className = "visibility-hidden";
             generateQuestion(selectedDifficulty); // 次の問題を生成
@@ -205,7 +203,11 @@ function generateQuestion(difficulty) {
         const button =document.getElementById("checkButton");
         button.addEventListener("click", () => {
         checkAnswer(currentQuestion, userAnswer.value);
+        setTimeout(() => {
+          userAnswer.value = "";
+        }, 2000);   
         });
+        
     }
     
      // MathJaxのレンダリングを行う
@@ -276,8 +278,10 @@ startButton.addEventListener('click', () => {
     });
 
     if (isTimeAttackMode) {
-        numberOfQuestions = 10; // タイムアタックモードでは問題数を5問に固定
+        numberOfQuestions = 10; // タイムアタックモードでは問題数を10問に固定
         startCountdown(); // カウントダウンを開始
+        const timerElement = document.querySelector('.timer');
+        timerElement.classList.remove('hidden');
     } else {
         startGame(selectedDifficulty); // ゲームを開始
         const timerElement = document.querySelector('.timer');
@@ -324,13 +328,13 @@ function startGame(difficulty) {
     displayDifficulty();//難易度を表示
     displayScore();//問題数を表示
     generateQuestion(difficulty);//問題を生成
-    if ((numberOfQuestions >= 1 && numberOfQuestions <= 9) | isTimeAttackMode) {
+    if ((numberOfQuestions >= 1 && numberOfQuestions <= 10) | isTimeAttackMode) {
         // question-containerを表示
         document.querySelector('.container').classList.remove('hidden');
         document.querySelector('.setting').classList.add('hidden');
         startButton.disabled = true;
     } else {
-        alert("問題数を入力してください。問題数の上限は9問です。");
+        alert("問題数を入力してください。問題数の上限は10問です。");
         startButton.disabled = false;
     }
 }
