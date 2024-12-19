@@ -241,6 +241,20 @@ function showHint() {
 const hintButton = document.getElementById('hintButton');
 hintButton.addEventListener('click', showHint);
 
+//　解答欄の入力規制
+function checkMatch(event){
+    const text = event.value;
+    const check = text.match(/[^0-9.]/);
+    const cheakButton = document.getElementById("cheakButton");
+    const res = document.getElementById("res");
+    if(check !== null){    
+        res.innerText = "※「" + check + "」は半角数字以外の文字です。半角数字を入力してください。";
+        cheakButton.disabled = true;
+    }else{
+        res.innerText = "";
+    }
+}
+
 // settingの処理
 // モード選択のイベントリスナー
 const modeInputs = document.getElementsByName('mode');
@@ -336,9 +350,9 @@ function startGame(difficulty) {
         document.querySelector('.setting').classList.add('hidden');
         startButton.disabled = true;
     } else {
-        alert("問題数を入力してください。問題数の上限は10問です。");
+        alert("問題数の上限は10問です。");
         startButton.disabled = false;
-    }
+    };
 }
 
 function resetGame() {

@@ -122,6 +122,15 @@ body {
    transition: background-color 0.3s, transform 0.2s;
 }
 
+#checkButton:hover {
+   background-color: #218838;
+   transform: scale(1.05);
+}
+
+#res {
+   color: #dc3545;
+}
+
 .choices{
    display: flex;
    flex-direction: row;
