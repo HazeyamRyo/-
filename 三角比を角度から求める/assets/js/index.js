@@ -200,6 +200,8 @@ function generateQuestion(difficulty) {
     if(difficulty === "hard"){
         const currentQuestion = getNextQuestion("hard");
         showQuestion(currentQuestion);
+        userAnswer.classList.remove("hidden");
+        checkButton.classList.remove("hidden");
         const button =document.getElementById("checkButton");
         button.addEventListener("click", () => {
         checkAnswer(currentQuestion, userAnswer.value);

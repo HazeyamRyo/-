@@ -122,6 +122,9 @@ startButton.addEventListener('click', () => {
     if (isTimeAttackMode) {
         numberOfQuestions = 5; // タイムアタックモードでは問題数を5問に固定
         startCountdown(); // カウントダウンを開始
+        const timerElement = document.querySelector('.timer');
+        timerElement.classList.remove('hidden');
+       
     } else {
         startGame();
         const timerElement = document.querySelector('.timer');
