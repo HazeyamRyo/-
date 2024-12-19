@@ -131,6 +131,29 @@ body {
     transform: scale(1.05);
 }
 
+.resetButton{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+ }
+ #resetButton {
+    background-color: #fdd01c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-top: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+ }
+
+    #resetButton:hover {
+        background-color: #e0a800;
+        transform: scale(1.05);
+    }
+ 
+ 
 .correct {
     background-color: #28a745;
     color: white;

@@ -328,4 +328,9 @@ function checkAnswer(selectedAnswer, question, questionTextId) {
     }
 }
    
-
+//resetボタンの処理
+const resetButton = document.getElementById('resetButton');
+resetButton.addEventListener('click', () => {
+    resetGameElements();
+    startButton.disabled = false;
+});
