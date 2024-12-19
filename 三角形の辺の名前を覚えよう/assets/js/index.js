@@ -169,7 +169,7 @@ function startGame() {
         document.querySelector('.setting').classList.add('hidden');
         startButton.disabled = true;
     } else {
-        alert("問題数を入力してください。問題数の上限は9問です。");
+        alert("問題数の上限は9問です。");
         startButton.disabled = false;
     }
 
